@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXDrawer?>
+<?import com.jfoenix.controls.JFXDrawersStack?>
+<?import com.jfoenix.controls.JFXSlider?>
+<?import com.jfoenix.controls.JFXToggleButton?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="root" prefHeight="766.0" prefWidth="764.0" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+    <children>
+        <JFXDrawersStack fx:id="drawersStack" layoutY="1.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="692.0" prefWidth="940.0" AnchorPane.bottomAnchor="83.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="1.0" />
+        <JFXDrawer fx:id="leftDrawer" layoutX="-290.0" layoutY="1.0" prefHeight="692.0" prefWidth="290.0">
+         <children>
+            <VBox fx:id="choosePane" prefHeight="766.0" prefWidth="290.0" spacing="10.0">
+               <children>
+                  <VBox prefHeight="53.0" prefWidth="278.0" spacing="15.0">
+                     <opaqueInsets>
+                        <Insets left="20.0" />
+                     </opaqueInsets>
+                     <padding>
+                        <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+                     </padding>
+                     <children>
+                        <Label prefHeight="52.0" prefWidth="156.0" text="设置">
+                           <font>
+                              <Font name="System Bold" size="33.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </VBox>
+                  <JFXButton fx:id="searchSongBtn" alignment="BASELINE_LEFT" prefHeight="32.0" prefWidth="290.0" ripplerFill="#31c27c" text="搜索歌曲">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                     <graphic>
+                        <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../img/search.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </JFXButton>
+                  <JFXButton fx:id="myFavoriteBtn" alignment="BASELINE_LEFT" prefHeight="32.0" prefWidth="290.0" ripplerFill="#31c27c" text="我的收藏">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                     <graphic>
+                        <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../img/heart.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </JFXButton>
+                  <VBox prefHeight="63.0" prefWidth="290.0" spacing="5.0">
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                     <children>
+                        <JFXButton fx:id="chooseDirBtn" alignment="BASELINE_LEFT" prefHeight="25.0" prefWidth="290.0" text="下载位置">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                           <graphic>
+                              <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../img/download.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic></JFXButton>
+                        <JFXButton fx:id="downloadDir" alignment="CENTER" prefHeight="23.0" prefWidth="306.0" text="C:\Users\">
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font></JFXButton>
+                     </children>
+                  </VBox>
+                  <JFXToggleButton fx:id="setCache" alignment="CENTER_LEFT" prefHeight="62.0" prefWidth="294.0" text="开启缓存" toggleColor="#31c27c" toggleLineColor="#2d904e">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </JFXToggleButton>
+               </children>
+               <padding>
+                  <Insets top="20.0" />
+               </padding>
+            </VBox>
+         </children></JFXDrawer>
+      <HBox id="bottomHBox" layoutX="10.0" layoutY="700.0" prefHeight="76.0" prefWidth="930.0">
+         <children>
+            <HBox alignment="CENTER_LEFT" prefHeight="76.0" prefWidth="220.0" spacing="20.0">
+               <children>
+                  <ImageView fx:id="preSong" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" smooth="false">
+                     <image>
+                        <Image url="@../img/preSong.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="play_pause" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" smooth="false">
+                     <image>
+                        <Image url="@../img/pause.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="nextSong" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" smooth="false">
+                     <image>
+                        <Image url="@../img/nextSong.png" />
+                     </image>
+                  </ImageView>
+               </children>
+               <padding>
+                  <Insets left="5.0" />
+               </padding>
+            </HBox>
+            <HBox alignment="CENTER_RIGHT" prefHeight="76.0" prefWidth="516.0" spacing="10.0">
+               <children>
+                  <ImageView fx:id="albumImg" fitHeight="76.0" fitWidth="76.0" pickOnBounds="true" preserveRatio="true" />
+                  <VBox alignment="CENTER" prefHeight="76.0" prefWidth="427.0">
+                     <children>
+                        <Label fx:id="songinfoLabel" alignment="CENTER" contentDisplay="CENTER" prefHeight="17.0" prefWidth="574.0">
+                           <VBox.margin>
+                              <Insets bottom="5.0" />
+                           </VBox.margin>
+                        </Label>
+                        <JFXSlider fx:id="timeSlider" prefHeight="14.0" prefWidth="521.0" value="-1.0" />
+                        <AnchorPane prefHeight="25.0" prefWidth="556.0">
+                           <children>
+                              <Label fx:id="crtTimeLabel" layoutY="5.0" text="00:00" AnchorPane.leftAnchor="0.0" />
+                              <Label fx:id="timeLabel" layoutX="524.0" layoutY="5.0" text="00:00" AnchorPane.rightAnchor="0.0" />
+                           </children>
+                        </AnchorPane>
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+            <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="10.0">
+               <children>
+                  <ImageView fx:id="like" fitHeight="38.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../img/like-green.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="setting" fitHeight="38.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../img/setting.png" />
+                     </image>
+                  </ImageView>
+                  <VBox alignment="CENTER_RIGHT" prefHeight="76.0" prefWidth="48.0">
+                     <children>
+                        <JFXSlider fx:id="volControl" orientation="VERTICAL" prefHeight="66.0" prefWidth="14.0" />
+                     </children>
+                  </VBox>
+               </children>
+               <padding>
+                  <Insets right="5.0" />
+               </padding>
+            </HBox>
+         </children>
+      </HBox>
+    </children>
+</AnchorPane>

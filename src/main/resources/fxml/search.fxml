@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXSpinner?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import com.jfoenix.controls.JFXTreeTableView?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="root" prefHeight="766.0" prefWidth="930.0" stylesheets="@../css/style.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+    <children>
+        <HBox alignment="CENTER_RIGHT" layoutX="436.0" layoutY="24.0" prefHeight="59.0" prefWidth="344.0" spacing="10.0" AnchorPane.rightAnchor="0.0">
+            <children>
+                <JFXTextField id="keywordInput" fx:id="keywordInput" prefHeight="39.0" prefWidth="217.0" promptText="输入关键词" />
+                <JFXButton fx:id="searchBtn" prefHeight="32.0" prefWidth="78.0" text="搜索">
+               <font>
+                  <Font size="15.0" />
+               </font></JFXButton>
+            </children>
+         <padding>
+            <Insets right="20.0" />
+         </padding>
+        </HBox>
+      <AnchorPane layoutY="95.0" prefHeight="577.0" prefWidth="764.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+         <children>
+                <JFXTreeTableView fx:id="resultTable" prefHeight="577.0" prefWidth="764.0" showRoot="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+         </children>
+      </AnchorPane>
+        <ImageView fx:id="logo" fitHeight="38.0" fitWidth="207.0" layoutX="14.0" layoutY="35.0" pickOnBounds="true" preserveRatio="true">
+            <image>
+                <Image url="@../img/logo.png" />
+            </image>
+        </ImageView>
+      <JFXSpinner fx:id="spinner" layoutX="161.0" layoutY="38.0" prefHeight="32.0" prefWidth="30.0" visible="false" />
+    </children>
+</AnchorPane>

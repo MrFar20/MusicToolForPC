@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXSpinner?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import com.jfoenix.controls.JFXTreeTableView?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="root" prefHeight="766.0" prefWidth="930.0" stylesheets="@../css/style.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+    <children>
+        <HBox alignment="CENTER_RIGHT" layoutX="436.0" layoutY="24.0" prefHeight="59.0" prefWidth="344.0" spacing="10.0" AnchorPane.rightAnchor="0.0">
+            <children>
+                <JFXTextField id="keywordInput" fx:id="searchWordInput" prefHeight="39.0" prefWidth="217.0" promptText="搜索我的收藏" />
+            </children>
+            <padding>
+                <Insets right="20.0" />
+            </padding>
+        </HBox>
+        <AnchorPane layoutY="95.0" prefHeight="577.0" prefWidth="764.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+            <children>
+                <JFXTreeTableView fx:id="table" prefHeight="577.0" prefWidth="764.0" showRoot="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+            </children>
+        </AnchorPane>
+        <JFXSpinner fx:id="spinner" layoutX="161.0" layoutY="38.0" prefHeight="32.0" prefWidth="30.0" visible="false" />
+      <Label alignment="CENTER" layoutX="14.0" layoutY="28.0" prefHeight="52.0" prefWidth="151.0" text="我的收藏">
+         <font>
+            <Font name="System Bold" size="33.0" />
+         </font>
+      </Label>
+    </children>
+</AnchorPane>
