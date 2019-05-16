@@ -229,7 +229,7 @@ public class MyFavoriteController implements Initializable, Data<SongPropertyV2>
      */
     public boolean addToMyFavorite(SongPropertyV2 s) {
         for (SongPropertyV2 sp : data) {
-            if (sp.getSongmid().equals(sp.getSongmid())) {
+            if (sp.getSongmid().equals(s.getSongmid())) {
                 return false;
             }
         }

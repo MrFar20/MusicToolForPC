@@ -209,7 +209,7 @@ public class MainController implements Initializable {
                 if (like.getImage() == likeImg) {
                     myFavoriteController.addToMyFavorite(crtSongProperty);
                 } else {
-                    if (myFavoriteController.removeFromMyFavorite(crtSongProperty)) like.setImage(likeImg);
+                    myFavoriteController.removeFromMyFavorite(crtSongProperty);
                 }
             }
         });
