@@ -152,7 +152,7 @@ public class SearchController implements Initializable, Data<SongPropertyV2> {
                     mainController.playMusic(data.get(crtindex));
                     mainController.setData(this);
                 } else if (event.getClickCount() == 1 && event.getButton() == MouseButton.SECONDARY && (!row.isEmpty())) {
-                    mainController.addToMyFavorite(data.get(row.getIndex()));
+                    mainController.getMyFavoriteController().addToMyFavorite(data.get(row.getIndex()));
                 } else if (event.getClickCount() == 2 && event.getButton() == MouseButton.SECONDARY && (!row.isEmpty())) {
                     LOGGER.info("下载" + data.get(row.getIndex()));
                     SongPropertyV2 songProperty = data.get(row.getIndex());

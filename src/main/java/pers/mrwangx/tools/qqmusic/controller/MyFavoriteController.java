@@ -2,7 +2,6 @@ package pers.mrwangx.tools.qqmusic.controller;
 
 import com.jfoenix.controls.*;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
@@ -10,11 +9,9 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Tooltip;
 import javafx.scene.control.TreeItem;
-import javafx.scene.control.TreeTableCell;
-import javafx.scene.control.TreeTableColumn;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.Pane;
-import javafx.util.Callback;
+import pers.mrwangx.tools.qqmusic.entity.SongProperty;
 import pers.mrwangx.tools.qqmusic.entity.SongPropertyV2;
 import pers.mrwangx.tools.qqmusic.service.Data;
 import pers.mrwangx.tools.qqmusic.util.FileUtil;
@@ -131,9 +128,7 @@ public class MyFavoriteController implements Initializable, Data<SongPropertyV2>
                     mainController.playMusic(data.get(crtindex));
                     mainController.setData(this);
                 } else if (event.getClickCount() == 1 && event.getButton() == MouseButton.SECONDARY && (!row.isEmpty())) {
-                    SongPropertyV2 s = data.get(row.getIndex());
-                    FileUtil.delSongProperty(s.getSongmid(), FileUtil.getFavorDir());
-                    data.remove(s);
+                    removeFromMyFavorite(data.get(row.getIndex()));
                 }  else if (event.getClickCount() == 2 && event.getButton() == MouseButton.SECONDARY && (!row.isEmpty())) {
                     LOGGER.info("下载" + data.get(row.getIndex()));
                     SongPropertyV2 songProperty = data.get(row.getIndex());
@@ -205,5 +200,43 @@ public class MyFavoriteController implements Initializable, Data<SongPropertyV2>
 
     public Pane getRoot() {
         return root;
+    }
+
+    /**
+     * 从我的收藏中删除
+     * @param s
+     * @return
+     */
+    public boolean removeFromMyFavorite(SongPropertyV2 s) {
+        if (s != null) {
+            for (int i = 0; i < data.size(); i++) {
+                if (data.get(i).getSongmid().equals(s.getSongmid())) {
+                    data.remove(i);
+                    SongPropertyV2 crtSp = mainController.getCrtSongProperty();
+                    if (s.getSongmid().equals(crtSp == null ? null : crtSp.getSongmid())) mainController.setToLikeImg();
+                    FileUtil.delSongProperty(s.getSongmid(), FileUtil.getFavorDir());
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
+     * 添加到我的收藏
+     * @param s
+     * @return
+     */
+    public boolean addToMyFavorite(SongPropertyV2 s) {
+        for (SongPropertyV2 sp : data) {
+            if (sp.getSongmid().equals(sp.getSongmid())) {
+                return false;
+            }
+        }
+        data.add(s);
+        SongPropertyV2 crtSp = mainController.getCrtSongProperty();
+        if (s.getSongmid().equals(crtSp == null ? null : crtSp.getSongmid())) mainController.setToLikeFillImg();
+        FileUtil.saveSongProperty(s, FileUtil.getFavorDir());
+        return true;
     }
 }

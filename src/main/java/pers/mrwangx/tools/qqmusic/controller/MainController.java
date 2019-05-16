@@ -206,9 +206,12 @@ public class MainController implements Initializable {
         //喜欢
         like.setOnMouseClicked(event -> {
             if (crtSongProperty != null) {
-                addToMyFavorite(crtSongProperty);
+                if (like.getImage() == likeImg) {
+                    myFavoriteController.addToMyFavorite(crtSongProperty);
+                } else {
+                    if (myFavoriteController.removeFromMyFavorite(crtSongProperty)) like.setImage(likeImg);
+                }
             }
-            like.setImage(like.getImage() == likeImg ? likeFillImg : likeImg);
         });
     }
 
@@ -301,6 +304,14 @@ public class MainController implements Initializable {
         if (songProperty != null) {
             Platform.runLater(() -> {
                 if (!songProperty.getPurl().matches("^\\s*$")) {
+                    Image image = likeImg;
+                    for (SongPropertyV2 s :myFavoriteController.getData()) {
+                        if (s.getSongmid().equals(songProperty.getSongmid())) {
+                            image = likeFillImg;
+                            break;
+                        }
+                    }
+                    like.setImage(image);
                     LOGGER.info("播放" + songProperty);
                     resetSongInfoDisplay();
                     //缓存是否开启
@@ -464,20 +475,23 @@ public class MainController implements Initializable {
         this.data = data;
     }
 
-    public void addToMyFavorite(SongPropertyV2 songProperty) {
-        boolean flag = true;
-        for (SongPropertyV2 s : myFavoriteController.getData()) {
-            if (s.getSongmid().equals(songProperty.getSongmid())) return;
-        }
-        this.myFavoriteController.add(songProperty);
-        FileUtil.saveSongProperty(songProperty, FileUtil.getFavorDir());
-    }
-
     public Properties getSettings() {
         return settings;
     }
 
     public void setSettings(Properties settings) {
         this.settings = settings;
+    }
+
+    public void setToLikeImg() {
+        this.like.setImage(likeImg);
+    }
+
+    public void setToLikeFillImg() {
+        this.like.setImage(likeFillImg);
+    }
+
+    public SongPropertyV2 getCrtSongProperty() {
+        return crtSongProperty;
     }
 }
