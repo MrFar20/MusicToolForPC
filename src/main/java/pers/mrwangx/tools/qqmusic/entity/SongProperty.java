@@ -1,5 +1,6 @@
 package pers.mrwangx.tools.qqmusic.entity;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 import javafx.beans.property.SimpleStringProperty;
 import pers.mrwangx.tools.qqmusic.util.QQMusicUtil;
@@ -53,6 +54,7 @@ public class SongProperty<T> extends RecursiveTreeObject<T> implements Serializa
                 '}';
     }
 
+    @JSONField(serialize = false) //不序列化
     public String getDownloadUrl() {
         return QQMusicUtil.DOWNLOAD_BASE_URL + purl;
     }

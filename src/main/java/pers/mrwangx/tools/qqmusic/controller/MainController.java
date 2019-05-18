@@ -315,7 +315,14 @@ public class MainController implements Initializable {
                     LOGGER.info("播放" + songProperty);
                     resetSongInfoDisplay();
                     //缓存是否开启
-                    String resource = songProperty.getDownloadUrl();
+                    String resource = null;
+                    try {
+                        resource = QQMusicUtil.DOWNLOAD_BASE_URL + QQMusicUtil.getPurl(songProperty.getSongmid());
+                    } catch (IOException e) {
+                        alert("播放[" + songProperty.getName() + " - " + songProperty.getSinger() + "]失败");
+                        e.printStackTrace();
+                        return ;
+                    }
                     if (setCache.isSelected()) {
                         File cacheFile = FileUtil.getSongCache(songProperty.getSongmid());
                         if (cacheFile == null) {
