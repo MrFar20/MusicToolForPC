@@ -1,5 +1,6 @@
 package pers.mrwangx.tools.qqmusic.entity;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import pers.mrwangx.tools.qqmusic.util.QQMusicUtil;
 
 /****
@@ -45,6 +46,7 @@ public class Song {
                 '}';
     }
 
+    @JSONField(serialize = false)
     public String getDownloadUrl() {
         return QQMusicUtil.DOWNLOAD_BASE_URL + purl;
     }
