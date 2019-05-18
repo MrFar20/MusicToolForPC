@@ -18,6 +18,7 @@ public class SongProperty<T> extends RecursiveTreeObject<T> implements Serializa
 
     protected final SimpleStringProperty name;        //歌名
     protected String songmid;                         //歌曲mid
+    @JSONField(serialize = false)
     protected String purl;                            //下载的地址
     protected final SimpleStringProperty singer;      //歌手
     protected final SimpleStringProperty albumname;   //专辑名

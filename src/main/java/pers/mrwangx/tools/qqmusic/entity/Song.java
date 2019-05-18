@@ -12,6 +12,7 @@ public class Song {
 
     private String name;        //歌名
     private String songmid;     //歌曲mid
+    @JSONField(serialize = false)
     private String purl;        //下载的相对地址
     private String singer;      //歌手
     private Integer albumid;     //专辑id

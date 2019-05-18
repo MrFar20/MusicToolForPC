@@ -303,9 +303,9 @@ public class MainController implements Initializable {
     public void playMusic(SongPropertyV2 songProperty) {
         if (songProperty != null) {
             Platform.runLater(() -> {
-                if (!songProperty.getPurl().matches("^\\s*$")) {
+                if (!songProperty.getSongmid().matches("^\\s*$")) {
                     Image image = likeImg;
-                    for (SongPropertyV2 s :myFavoriteController.getData()) {
+                    for (SongPropertyV2 s : myFavoriteController.getData()) {
                         if (s.getSongmid().equals(songProperty.getSongmid())) {
                             image = likeFillImg;
                             break;
@@ -314,23 +314,30 @@ public class MainController implements Initializable {
                     like.setImage(image);
                     LOGGER.info("播放" + songProperty);
                     resetSongInfoDisplay();
-                    //缓存是否开启
                     String resource = null;
-                    try {
-                        resource = QQMusicUtil.DOWNLOAD_BASE_URL + QQMusicUtil.getPurl(songProperty.getSongmid());
-                    } catch (IOException e) {
-                        alert("播放[" + songProperty.getName() + " - " + songProperty.getSinger() + "]失败");
-                        e.printStackTrace();
-                        return ;
+                    if (songProperty.getPurl() == null) {
+                        try {
+                            resource = QQMusicUtil.DOWNLOAD_BASE_URL + QQMusicUtil.getPurl(songProperty.getSongmid());
+                        } catch (IOException e) {
+                            alert("播放[" + songProperty.getName() + " - " + songProperty.getSinger() + "]失败");
+                            e.printStackTrace();
+                            return;
+                        }
+                    } else if (!songProperty.getPurl().matches("^\\s*$")) {
+                        resource = songProperty.getDownloadUrl();
+                    } else if (songProperty.getPurl().matches("^\\s*$")) {
+                        nextSong();
+                        return;
                     }
+                    //缓存是否开启
                     if (setCache.isSelected()) {
                         File cacheFile = FileUtil.getSongCache(songProperty.getSongmid());
                         if (cacheFile == null) {
                             File cf = FileUtil.saveSongCache(FileUtil.getRuntimeDir() + App.CACHE_DIR, songProperty.getSongmid(), songProperty.getDownloadUrl());
-                            String fUrl =  FileUtil.fileToUrlString(cf);
+                            String fUrl = FileUtil.fileToUrlString(cf);
                             resource = cf == null ? resource : fUrl == null ? resource : fUrl;
                         } else {
-                            String fUrl =  FileUtil.fileToUrlString(cacheFile);
+                            String fUrl = FileUtil.fileToUrlString(cacheFile);
                             resource = fUrl == null ? resource : fUrl;
                         }
                     }
@@ -368,8 +375,6 @@ public class MainController implements Initializable {
                     crtSongProperty = songProperty;
                     albumImg.setImage(new Image(QQMusicUtil.getAlbumImgUrl(songProperty.getAlbumid())));
                     playMusic();
-                } else if (songProperty.getPurl().matches("^\\s*$")) {
-                    nextSong();
                 }
             });
         }
