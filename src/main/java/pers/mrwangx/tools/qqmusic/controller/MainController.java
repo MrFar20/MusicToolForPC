@@ -42,6 +42,7 @@ import java.util.logging.Logger;
 public class MainController implements Initializable {
 
     private static final Logger LOGGER = Logger.getLogger("MainController");
+    private static final String ABOUT_MESSAGE = "此软件供学习和交流用，请支持正版QQ音乐！！！！\n作者:MrWangx";
 
     private SearchController searchController;
     private MyFavoriteController myFavoriteController;
@@ -82,6 +83,8 @@ public class MainController implements Initializable {
     private JFXToggleButton setCache;
     @FXML
     private JFXButton searchSongBtn;
+    @FXML
+    private JFXButton aboutBtn;
 
     //mediatonctrol
     @FXML
@@ -145,6 +148,9 @@ public class MainController implements Initializable {
         searchSongBtn.setOnMouseClicked(event -> {
             drawersStack.setContent(searchController.getRoot());
             leftDrawer.toggle();
+        });
+        aboutBtn.setOnMouseClicked(event -> {
+            alert(ABOUT_MESSAGE);
         });
     }
 
@@ -329,6 +335,7 @@ public class MainController implements Initializable {
                         nextSong();
                         return;
                     }
+                    LOGGER.info(resource);
                     //缓存是否开启
                     if (setCache.isSelected()) {
                         File cacheFile = FileUtil.getSongCache(songProperty.getSongmid());
