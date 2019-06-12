@@ -30,9 +30,9 @@
                 <JFXTreeTableView fx:id="resultTable" prefHeight="577.0" prefWidth="764.0" showRoot="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
          </children>
       </AnchorPane>
-        <ImageView fx:id="logo" fitHeight="38.0" fitWidth="207.0" layoutX="14.0" layoutY="35.0" pickOnBounds="true" preserveRatio="true">
+        <ImageView fx:id="logo" fitHeight="53.0" fitWidth="88.0" layoutX="14.0" layoutY="27.0" pickOnBounds="true" preserveRatio="true">
             <image>
-                <Image url="@../img/logo.png" />
+                <Image url="@../img/music_logo_red.png" />
             </image>
         </ImageView>
       <JFXSpinner fx:id="spinner" layoutX="161.0" layoutY="38.0" prefHeight="32.0" prefWidth="30.0" visible="false" />

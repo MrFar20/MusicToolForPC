@@ -1,6 +1,7 @@
 package pers.mrwangx.tools.qqmusic.entity;
 
 import javafx.beans.property.SimpleStringProperty;
+import pers.mrwangx.tool.musictool.entity.Song;
 
 import java.io.Serializable;
 
@@ -16,8 +17,8 @@ public class SongPropertyV2 extends SongProperty<SongPropertyV2> implements Seri
 
     private final SimpleStringProperty status;
 
-    public SongPropertyV2(String name, String songmid, String downloadUrl, String singer, Integer albumid, String albumname, String subtitle, String time) {
-        super(name, songmid, downloadUrl, singer, albumid, albumname, subtitle, time);
+    public SongPropertyV2(String musicType, String name, String songid, String singer, String albumid, String albumname, String imgurl, String alia, String duration) {
+        super(musicType, name, songid, singer, albumid, albumname, imgurl, alia, duration);
         this.status = new SimpleStringProperty("");
     }
 
@@ -30,14 +31,14 @@ public class SongPropertyV2 extends SongProperty<SongPropertyV2> implements Seri
     public String toString() {
         return "SongPropertyV2{" +
                 "status=" + status.get() +
+                ", musicType='" + musicType + '\'' +
                 ", name=" + name.get() +
-                ", songmid='" + songmid + '\'' +
-                ", purl='" + purl + '\'' +
+                ", songid='" + songid + '\'' +
                 ", singer=" + singer.get() +
+                ", albumid='" + albumid + '\'' +
                 ", albumname=" + albumname.get() +
-                ", albumid=" + albumid +
-                ", subtitle=" + subtitle.get() +
-                ", time=" + time.get() +
+                ", alia=" + alia.get() +
+                ", duration=" + duration.get() +
                 '}';
     }
 

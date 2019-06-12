@@ -26,7 +26,7 @@
     -fx-prompt-text-fill: #808080;
     -fx-alignment: bottom-left;
     -fx-font-size: 14px;
-    -jfx-focus-color: rgb(49, 194, 124);
+    -jfx-focus-color: #ff3a3a;
     -jfx-unfocus-color: #4d4d4d;
 }
 
@@ -39,20 +39,21 @@
 }
 
 #resultTable, #table {
-    -fx-tree-table-color: rgba(49, 194, 124, 0.4);
-    -fx-tree-table-rippler-color: rgba(49, 194, 124, 0.6);
+    -fx-tree-table-color: rgba(255, 58, 58, 0.4);
+    -fx-tree-table-rippler-color: rgba(255, 58, 58, 0.6);
 }
 
 .image-view {
     -fx-cursor: hand;
 }
 
-/*#nextSong, #preSong, #setting, #explorerOpen, #play_pause:hover {*/
-/*    -fx-cursor: hand;*/
-/*}*/
+#timeSlider, #volControl{
+    -jfx-default-thumb: #ff3a3a;
+    -jfx-default-track: #cccccc;
+}
 
 #searchBtn {
-    -fx-background-color: rgb(49, 194, 124);
+    -fx-background-color: #ff3a3a;
     -fx-text-fill: white;
 }
 

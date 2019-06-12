@@ -4,15 +4,14 @@ import com.alibaba.fastjson.JSON;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import pers.mrwangx.tool.musictool.entity.Song;
 import pers.mrwangx.tools.qqmusic.App;
-import pers.mrwangx.tools.qqmusic.entity.Song;
 import pers.mrwangx.tools.qqmusic.entity.SongPropertyV2;
 
 import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLDecoder;
-import java.nio.charset.Charset;
 import java.util.Properties;
 import java.util.logging.Logger;
 
@@ -99,7 +98,7 @@ public class FileUtil {
      * @return
      */
     public static int saveSongProperty(SongPropertyV2 songProperty, String dir) {
-        File file = new File(dir + File.separator + songProperty.getSongmid() + ".data");
+        File file = new File(dir + File.separator + songProperty.getSongid() + ".data");
         if (file.exists()) {
             LOGGER.info("存储歌曲信息已存在:" + songProperty);
         } else {

@@ -1,15 +1,15 @@
 package pers.mrwangx.tools.qqmusic.util;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import org.jsoup.Connection;
 import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import pers.mrwangx.tools.qqmusic.entity.Song;
+import pers.mrwangx.tool.musictool.MusicAPIHolder;
+import pers.mrwangx.tool.musictool.api.impl.QQMusicAPI;
+import pers.mrwangx.tool.musictool.config.MusicAPIConfig;
+import pers.mrwangx.tool.musictool.entity.Song;
 import pers.mrwangx.tools.qqmusic.entity.SongProperty;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -28,6 +28,9 @@ public class QQMusicUtil {
     public static final String ALBUM_IMG_URL = "http://imgcache.qq.com/music/photo/album_300/#{albumid%100}/300_albumpic_#{albumid}_0.jpg";
     public static final String LYRIC_URL = "https://c.y.qq.com/lyric/fcgi-bin/fcg_query_lyric_new.fcg?callback=MusicJsonCallback_lrc&pcachetime=1557976642637&songmid=#{songmid}&g_tk=1108864830&jsonpCallback=MusicJsonCallback_lrc&hostUin=0&format=jsonp&inCharset=utf8&outCharset=utf-8&notice=0&platform=yqq&needNewCode=0";
 
+    public static final QQMusicAPI QQ_MUSIC_API = (QQMusicAPI) MusicAPIHolder.getAPI(MusicAPIConfig.MUSIC_TYPE_TECENT);
+
+
     /**
      * 根据关键词查找歌曲信息
      *
@@ -38,29 +41,7 @@ public class QQMusicUtil {
      * @throws IOException
      */
     public static List<Song> getSongsByKeyword(String keyword, int pagenum, int pagesize) throws IOException {
-        List<Song> songslist = new ArrayList<>();
-
-        //获取歌歌曲信息表的jsonarray
-        JSONArray songsinfo = getSongsJsonBykeyword(keyword, pagenum, pagesize).getJSONObject("data").getJSONObject("song").getJSONArray("list");
-        //遍历返回的歌曲信息
-        for (Object o : songsinfo) {
-            JSONObject songinfo = (JSONObject) o;
-            try {
-                String songmid = songinfo.getString("mid");
-                String purl = getPurl(songmid);
-                String name = songinfo.getString("name");
-                String singer_name = songinfo.getJSONArray("singer").getJSONObject(0).getString("name");
-                Integer album_id = songinfo.getJSONObject("album").getInteger("id");
-                String album_name = songinfo.getJSONObject("album").getString("name");
-                String album_subtitle = songinfo.getJSONObject("album").getString("subtitle");
-                String time = songinfo.getString("interval");
-                Song song = new Song(name, songmid, purl, singer_name, album_id, album_name, album_subtitle, time);
-                songslist.add(song);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        return songslist;
+        return QQ_MUSIC_API.searchSong(keyword, pagenum, pagesize);
     }
 
     /**
@@ -71,23 +52,7 @@ public class QQMusicUtil {
      * @throws Exception
      */
     public static JSONObject getSongsJsonBykeyword(String keyword, int pagenum, int pagesize) throws IOException {
-        //HttpClient httpClient = HttpClients.createDefault();
-//        HttpGet httpGet = new HttpGet(getSongSearchUrl(keyword, pagenum, pagesize));
-//        String data = EntityUtils.toString(httpClient.execute(httpGet).getEntity());
-//        ((CloseableHttpClient) httpClient).close();
-        //获取返回的json信息
-        StringBuffer buffer = new StringBuffer();
-        URL url = new URL(getSongSearchUrl(keyword, pagenum, pagesize));
-        InputStream input = url.openStream();
-        byte[] d = new byte[1024];
-        int length = 0;
-        while ((length = input.read(d, 0, d.length)) != -1) {
-            buffer.append(new String(d, 0, length));
-        }
-        input.close();
-        String data = buffer.substring(buffer.indexOf("(") + 1, buffer.lastIndexOf(")"));
-        //获取歌歌曲信息表json信息
-        return JSON.parseObject(data);
+        return QQ_MUSIC_API.getSongSearchJson(keyword, pagenum, pagesize);
     }
 
     /**
@@ -113,51 +78,31 @@ public class QQMusicUtil {
         return list;
     }
 
+    public static String getSongPlayUrl(String songid) {
+        try {
+            return Jsoup.connect(MusicAPIConfig.SONG_PLAY_URL(MusicAPIConfig.MUSIC_TYPE_TECENT, songid) + "&quality=320")
+                    .method(Connection.Method.GET)
+                    .header("Content-type", "application/json")
+                    .ignoreContentType(true)
+                    .execute()
+                    .url()
+                    .toExternalForm()
+                    ;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     /**
      * 获取下载的相对url
-     * @param songmid
+     *
+     * @param songid
      * @return
-     * @throws IOException
      */
-    public static String getPurl(String songmid) throws IOException {
-        Document document = null;
-        document = Jsoup.connect(getSongInfoUrl(songmid)).get();
-        String data = document.body().text();
-        //获取json信息
-        data = data.substring(data.indexOf("(") + 1, data.lastIndexOf(")"));
-        //获取purl
-        JSONObject jsonObject = JSON.parseObject(data).getJSONObject("req_0");
-        String purl = jsonObject.getJSONObject("data").getJSONArray("midurlinfo").getJSONObject(0).getString("purl");
-        return purl;
+    public static String getPurl(String songid) {
+        return MusicAPIConfig.SONG_PLAY_URL(MusicAPIConfig.MUSIC_TYPE_TECENT, songid);
     }
 
-    /**
-     * 根据songmid获取歌曲的详细信息url
-     * @param songmid
-     * @return
-     */
-    public static String getSongInfoUrl(String songmid) {
-        return SONG_INFO_URL.replaceAll("#\\{songmid\\}", songmid);
-    }
-
-    /**
-     * 获取关键词搜索的url
-     * @param keyword
-     * @param pagenum
-     * @param pagesize
-     * @return
-     */
-    public static String getSongSearchUrl(String keyword, int pagenum, int pagesize) {
-        return SONG_SEARCH_URL.replaceAll("#\\{keyword\\}", keyword).replaceAll("#\\{page\\}", Integer.toString(pagenum)).replaceAll("#\\{num\\}", Integer.toString(pagesize));
-    }
-
-    /**
-     * 根据专辑id获取专辑封面的图片url
-     * @param albumid
-     * @return
-     */
-    public static String getAlbumImgUrl(Integer albumid) {
-        return ALBUM_IMG_URL.replaceAll("#\\{albumid%100\\}", albumid % 100 + "").replaceAll("#\\{albumid\\}", albumid.toString());
-    }
 
 }

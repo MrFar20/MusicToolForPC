@@ -309,10 +309,10 @@ public class MainController implements Initializable {
     public void playMusic(SongPropertyV2 songProperty) {
         if (songProperty != null) {
             Platform.runLater(() -> {
-                if (!songProperty.getSongmid().matches("^\\s*$")) {
+                if (!songProperty.getSongid().matches("^\\s*$")) {
                     Image image = likeImg;
                     for (SongPropertyV2 s : myFavoriteController.getData()) {
-                        if (s.getSongmid().equals(songProperty.getSongmid())) {
+                        if (s.getSongid().equals(songProperty.getSongid())) {
                             image = likeFillImg;
                             break;
                         }
@@ -320,27 +320,13 @@ public class MainController implements Initializable {
                     like.setImage(image);
                     LOGGER.info("播放" + songProperty);
                     resetSongInfoDisplay();
-                    String resource = null;
-                    if (songProperty.getPurl() == null) {
-                        try {
-                            resource = QQMusicUtil.DOWNLOAD_BASE_URL + QQMusicUtil.getPurl(songProperty.getSongmid());
-                        } catch (IOException e) {
-                            alert("播放[" + songProperty.getName() + " - " + songProperty.getSinger() + "]失败");
-                            e.printStackTrace();
-                            return;
-                        }
-                    } else if (!songProperty.getPurl().matches("^\\s*$")) {
-                        resource = songProperty.getDownloadUrl();
-                    } else if (songProperty.getPurl().matches("^\\s*$")) {
-                        nextSong();
-                        return;
-                    }
+                    String resource = songProperty.SONG_PLAY_URL();
                     LOGGER.info(resource);
                     //缓存是否开启
                     if (setCache.isSelected()) {
-                        File cacheFile = FileUtil.getSongCache(songProperty.getSongmid());
+                        File cacheFile = FileUtil.getSongCache(songProperty.getSongid());
                         if (cacheFile == null) {
-                            File cf = FileUtil.saveSongCache(FileUtil.getRuntimeDir() + App.CACHE_DIR, songProperty.getSongmid(), songProperty.getDownloadUrl());
+                            File cf = FileUtil.saveSongCache(FileUtil.getRuntimeDir() + App.CACHE_DIR, songProperty.getSongid(), songProperty.SONG_PLAY_URL());
                             String fUrl = FileUtil.fileToUrlString(cf);
                             resource = cf == null ? resource : fUrl == null ? resource : fUrl;
                         } else {
@@ -348,12 +334,11 @@ public class MainController implements Initializable {
                             resource = fUrl == null ? resource : fUrl;
                         }
                     }
+                    LOGGER.info(resource);
                     media = new Media(resource);
-                    media.setOnError(() -> {
-                        alert("播放[" + songProperty.getName() + " - " + songProperty.getSinger() + "]失败");
-                    });
+
                     mediaPlayer = new MediaPlayer(media);
-                    int time = Integer.parseInt(songProperty.getTime());
+                    int time = Integer.parseInt(songProperty.getDuration());
                     mediaPlayer.setOnReady(() -> {
                         timeLabel.setText(String.format("%02d:%02d", time / 60, time % 60));
                     });
@@ -380,7 +365,7 @@ public class MainController implements Initializable {
                     });
                     songinfoLabel.setText(songProperty.getName() + " - " + songProperty.getSinger());
                     crtSongProperty = songProperty;
-                    albumImg.setImage(new Image(QQMusicUtil.getAlbumImgUrl(songProperty.getAlbumid())));
+                    albumImg.setImage(new Image(songProperty.getImgurl()));
                     playMusic();
                 }
             });

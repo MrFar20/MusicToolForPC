@@ -116,7 +116,7 @@ public class SearchController implements Initializable, Data<SongPropertyV2> {
         subtitleColumn.setPrefWidth(resultTable.getPrefWidth() / COLUMNS);
         subtitleColumn.setCellValueFactory(param -> {
             if (subtitleColumn.validateValue(param)) {
-                return param.getValue().getValue().subtitleProperty();
+                return param.getValue().getValue().aliaProperty();
             } else {
                 return subtitleColumn.getComputedValue(param);
             }
@@ -126,7 +126,7 @@ public class SearchController implements Initializable, Data<SongPropertyV2> {
         timeColumn.setPrefWidth(resultTable.getPrefWidth() / COLUMNS);
         timeColumn.setCellValueFactory(param -> {
             if (timeColumn.validateValue(param)) {
-                return param.getValue().getValue().timeProperty();
+                return param.getValue().getValue().durationProperty();
             } else {
                 return timeColumn.getComputedValue(param);
             }
@@ -159,7 +159,7 @@ public class SearchController implements Initializable, Data<SongPropertyV2> {
                     Task<Object> downloadTask = new Task<Object>() {
                         @Override
                         protected Object call() throws Exception {
-                            FileUtil.downloadSong(new File(mainController.getSavePath(), songProperty.getName() + " - " + songProperty.getSinger() + ".m4a"), songProperty.getDownloadUrl(), songProperty.statusProperty());
+                            FileUtil.downloadSong(new File(mainController.getSavePath(), songProperty.getName() + " - " + songProperty.getSinger() + ".mp3"), songProperty.SONG_PLAY_URL(), songProperty.statusProperty());
                             return null;
                         }
                     };

@@ -92,7 +92,7 @@ public class MyFavoriteController implements Initializable, Data<SongPropertyV2>
         subtitleColumn.setPrefWidth(table.getPrefWidth() / COLUMNS);
         subtitleColumn.setCellValueFactory(param -> {
             if (subtitleColumn.validateValue(param)) {
-                return param.getValue().getValue().subtitleProperty();
+                return param.getValue().getValue().nameProperty();
             } else {
                 return subtitleColumn.getComputedValue(param);
             }
@@ -102,7 +102,7 @@ public class MyFavoriteController implements Initializable, Data<SongPropertyV2>
         timeColumn.setPrefWidth(table.getPrefWidth() / COLUMNS);
         timeColumn.setCellValueFactory(param -> {
             if (timeColumn.validateValue(param)) {
-                return param.getValue().getValue().timeProperty();
+                return param.getValue().getValue().durationProperty();
             } else {
                 return timeColumn.getComputedValue(param);
             }
@@ -135,7 +135,7 @@ public class MyFavoriteController implements Initializable, Data<SongPropertyV2>
                     Task<Object> downloadTask = new Task<Object>() {
                         @Override
                         protected Object call() throws Exception {
-                            FileUtil.downloadSong(new File(mainController.getSavePath(),  songProperty.getName() + " - " + songProperty.getSinger() + ".m4a"), songProperty.getDownloadUrl(), songProperty.statusProperty());
+                            FileUtil.downloadSong(new File(mainController.getSavePath(),  songProperty.getName() + " - " + songProperty.getSinger() + ".mp3"), songProperty.SONG_PLAY_URL(), songProperty.statusProperty());
                             return null;
                         }
                     };
@@ -155,7 +155,7 @@ public class MyFavoriteController implements Initializable, Data<SongPropertyV2>
                 String lowV = newValue.toLowerCase();
                 SongPropertyV2 e = item.getValue();
                 return e.getName().toLowerCase().contains(lowV) || e.getSinger().toLowerCase().contains(lowV) ||
-                        e.getAlbumname().toLowerCase().contains(lowV) || e.getSubtitle().toLowerCase().contains(lowV);
+                        e.getAlbumname().toLowerCase().contains(lowV) || e.getAlia().toLowerCase().contains(lowV);
             });
         });
     }
@@ -210,11 +210,11 @@ public class MyFavoriteController implements Initializable, Data<SongPropertyV2>
     public boolean removeFromMyFavorite(SongPropertyV2 s) {
         if (s != null) {
             for (int i = 0; i < data.size(); i++) {
-                if (data.get(i).getSongmid().equals(s.getSongmid())) {
+                if (data.get(i).getSongid().equals(s.getSongid())) {
                     data.remove(i);
                     SongPropertyV2 crtSp = mainController.getCrtSongProperty();
-                    if (s.getSongmid().equals(crtSp == null ? null : crtSp.getSongmid())) mainController.setToLikeImg();
-                    FileUtil.delSongProperty(s.getSongmid(), FileUtil.getFavorDir());
+                    if (s.getSongid().equals(crtSp == null ? null : crtSp.getSongid())) mainController.setToLikeImg();
+                    FileUtil.delSongProperty(s.getSongid(), FileUtil.getFavorDir());
                     return true;
                 }
             }
@@ -229,13 +229,13 @@ public class MyFavoriteController implements Initializable, Data<SongPropertyV2>
      */
     public boolean addToMyFavorite(SongPropertyV2 s) {
         for (SongPropertyV2 sp : data) {
-            if (sp.getSongmid().equals(s.getSongmid())) {
+            if (sp.getSongid().equals(s.getSongid())) {
                 return false;
             }
         }
         data.add(s);
         SongPropertyV2 crtSp = mainController.getCrtSongProperty();
-        if (s.getSongmid().equals(crtSp == null ? null : crtSp.getSongmid())) mainController.setToLikeFillImg();
+        if (s.getSongid().equals(crtSp == null ? null : crtSp.getSongid())) mainController.setToLikeFillImg();
         FileUtil.saveSongProperty(s, FileUtil.getFavorDir());
         return true;
     }

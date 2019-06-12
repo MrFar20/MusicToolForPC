@@ -3,6 +3,8 @@ package pers.mrwangx.tools.qqmusic.entity;
 import com.alibaba.fastjson.annotation.JSONField;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 import javafx.beans.property.SimpleStringProperty;
+import pers.mrwangx.tool.musictool.config.MusicAPIConfig;
+import pers.mrwangx.tool.musictool.entity.Song;
 import pers.mrwangx.tools.qqmusic.util.QQMusicUtil;
 
 import java.io.Serializable;
@@ -16,48 +18,58 @@ public class SongProperty<T> extends RecursiveTreeObject<T> implements Serializa
 
     private static final long serialVersionUID = 1L;
 
+    protected String musicType;
     protected final SimpleStringProperty name;        //歌名
-    protected String songmid;                         //歌曲mid
-    @JSONField(serialize = false)
-    protected String purl;                            //下载的地址
+    protected String songid;                          //歌曲mid
     protected final SimpleStringProperty singer;      //歌手
+    protected String albumid;                        //专辑id
     protected final SimpleStringProperty albumname;   //专辑名
-    protected Integer albumid;                        //专辑id
-    protected final SimpleStringProperty subtitle;    //专辑副标题
-    protected final SimpleStringProperty time;        //时长
+    private String imgurl;
+    protected final SimpleStringProperty alia;        //专辑副标题
+    protected final SimpleStringProperty duration;    //时长
+    protected String songPlayUrl;
 
-    public SongProperty(String name, String songmid, String purl, String singer, Integer albumid, String albumname, String subtitle, String time) {
+    public SongProperty(String musicType, String name, String songid, String singer, String albumid, String albumname, String imgurl, String alia, String duration) {
+        this.musicType = musicType;
         this.name = new SimpleStringProperty(name);
-        this.songmid = songmid;
-        this.purl = purl;
+        this.songid = songid;
         this.singer = new SimpleStringProperty(singer);
         this.albumid = albumid;
         this.albumname = new SimpleStringProperty(albumname);
-        this.subtitle = new SimpleStringProperty(subtitle);
-        this.time = new SimpleStringProperty(time);
+        this.imgurl = imgurl;
+        this.alia = new SimpleStringProperty(alia);
+        this.duration = new SimpleStringProperty(duration);
     }
 
     public SongProperty(Song song) {
-        this(song.getName(), song.getSongmid(), song.getPurl(), song.getSinger(), song.getAlbumid(), song.getAlbumname(), song.getSubtitle(), song.getTime());
+        this(song.getMusicType(), song.getName(), song.getSongid(), song.getSinger(), song.getAlbumid(), song.getAlbumname(), song.getImgurl(), song.getAlia(), Integer.toString(song.getDuration()));
     }
 
     @Override
     public String toString() {
         return "SongProperty{" +
-                "name=" + name.get() +
-                ", songmid='" + songmid + '\'' +
-                ", purl='" + purl + '\'' +
+                "musicType='" + musicType + '\'' +
+                ", name=" + name.get() +
+                ", songid='" + songid + '\'' +
                 ", singer=" + singer.get() +
-                ", albumname=" + albumname.get() +
                 ", albumid=" + albumid +
-                ", subtitle=" + subtitle.get() +
-                ", time=" + time.get() +
+                ", albumname=" + albumname.get() +
+                ", imgurl='" + imgurl + '\'' +
+                ", alia=" + alia.get() +
+                ", duration=" + duration.get() +
                 '}';
     }
 
-    @JSONField(serialize = false) //不序列化
-    public String getDownloadUrl() {
-        return QQMusicUtil.DOWNLOAD_BASE_URL + purl;
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
+    }
+
+    public String getMusicType() {
+        return musicType;
+    }
+
+    public void setMusicType(String musicType) {
+        this.musicType = musicType;
     }
 
     public String getName() {
@@ -72,24 +84,12 @@ public class SongProperty<T> extends RecursiveTreeObject<T> implements Serializa
         this.name.set(name);
     }
 
-    public String getSongmid() {
-        return songmid;
+    public String getSongid() {
+        return songid;
     }
 
-    public void setSongmid(String songmid) {
-        this.songmid = songmid;
-    }
-
-    public void setAlbumid(Integer albumid) {
-        this.albumid = albumid;
-    }
-
-    public String getPurl() {
-        return purl;
-    }
-
-    public void setPurl(String purl) {
-        this.purl = purl;
+    public void setSongid(String songid) {
+        this.songid = songid;
     }
 
     public String getSinger() {
@@ -104,8 +104,12 @@ public class SongProperty<T> extends RecursiveTreeObject<T> implements Serializa
         this.singer.set(singer);
     }
 
-    public Integer getAlbumid() {
+    public String getAlbumid() {
         return albumid;
+    }
+
+    public void setAlbumid(String albumid) {
+        this.albumid = albumid;
     }
 
     public String getAlbumname() {
@@ -120,27 +124,40 @@ public class SongProperty<T> extends RecursiveTreeObject<T> implements Serializa
         this.albumname.set(albumname);
     }
 
-    public String getSubtitle() {
-        return subtitle.get();
+    public String getImgurl() {
+        return imgurl;
     }
 
-    public SimpleStringProperty subtitleProperty() {
-        return subtitle;
+    public void setImgurl(String imgurl) {
+        this.imgurl = imgurl;
     }
 
-    public void setSubtitle(String subtitle) {
-        this.subtitle.set(subtitle);
+    public String getAlia() {
+        return alia.get();
     }
 
-    public String getTime() {
-        return time.get();
+    public SimpleStringProperty aliaProperty() {
+        return alia;
     }
 
-    public SimpleStringProperty timeProperty() {
-        return time;
+    public void setAlia(String alia) {
+        this.alia.set(alia);
     }
 
-    public void setTime(String time) {
-        this.time.set(time);
+    public String getDuration() {
+        return duration.get();
+    }
+
+    public SimpleStringProperty durationProperty() {
+        return duration;
+    }
+
+    public void setDuration(String duration) {
+        this.duration.set(duration);
+    }
+
+    @JSONField(serialize = false)
+    public String SONG_PLAY_URL() {
+        return songPlayUrl == null ? songPlayUrl = QQMusicUtil.getSongPlayUrl(this.songid) : songPlayUrl;
     }
 }

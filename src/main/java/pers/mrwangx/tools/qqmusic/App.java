@@ -86,7 +86,7 @@ public class App extends Application {
         root.getStylesheets().add("/css/style.css");
 
         primaryStage.getIcons().add(new Image("/img/logo-title.png"));
-        primaryStage.setTitle("QQMusicTool");
+        primaryStage.setTitle("MusicTool");
         primaryStage.setScene(new Scene(root));
         primaryStage.setResizable(false);
         primaryStage.show();
