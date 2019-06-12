@@ -1,4 +1,4 @@
-package pers.mrwangx.tools.qqmusic;
+package pers.mrwangx.tools.musictool;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -7,10 +7,10 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
-import pers.mrwangx.tools.qqmusic.controller.MainController;
-import pers.mrwangx.tools.qqmusic.controller.MyFavoriteController;
-import pers.mrwangx.tools.qqmusic.controller.SearchController;
-import pers.mrwangx.tools.qqmusic.util.FileUtil;
+import pers.mrwangx.tools.musictool.controller.MainController;
+import pers.mrwangx.tools.musictool.controller.MyFavoriteController;
+import pers.mrwangx.tools.musictool.controller.SearchController;
+import pers.mrwangx.tools.musictool.util.FileUtil;
 
 import java.io.File;
 import java.util.Properties;
@@ -28,6 +28,8 @@ public class App extends Application {
         launch(args);
     }
 
+    public static App app = null;
+
     private static final Logger LOGGER = Logger.getLogger("App");
 
     public static final String FAVOR_DIR = "/data/favorite";                                        //我的收藏信息文件夹
@@ -41,6 +43,8 @@ public class App extends Application {
     public static final String KEY_SETCACHE = "setCache";
     public static final String KEY_VOLUME = "volume";
 
+    private Stage stage;
+
     private MainController mainController;
     private SearchController searchController;
     private MyFavoriteController myFavoriteController;
@@ -49,7 +53,8 @@ public class App extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-
+        app = this;
+        stage = primaryStage;
         LOGGER.info(FileUtil.getRuntimeDir());
 
         searchController = new SearchController();
@@ -93,7 +98,7 @@ public class App extends Application {
 
         //alert组件初始化必须在stage.show()方法之后
         mainController.initAlert();
-        myFavoriteController.setData(FileUtil.readDataFromFile(new File(FileUtil.getFavorDir())));
+        myFavoriteController.setSongs(FileUtil.readDataFromFile(new File(FileUtil.getFavorDir())));
     }
 
     @Override
@@ -113,13 +118,14 @@ public class App extends Application {
         if (!file.exists()) {
             file.mkdirs();
         }
-        myFavoriteController.getData().forEach(e -> {
+        myFavoriteController.getSongs().forEach(e -> {
             FileUtil.saveSong(e, dir);
         });
         LOGGER.info("保存收藏完成");
     }
 
 
-
-
+    public Stage getStage() {
+        return stage;
+    }
 }

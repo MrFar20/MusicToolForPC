@@ -1,4 +1,4 @@
-package pers.mrwangx.tools.qqmusic.entity;
+package pers.mrwangx.tools.musictool.entity;
 
 import javafx.beans.property.SimpleStringProperty;
 import pers.mrwangx.tool.musictool.entity.Song;

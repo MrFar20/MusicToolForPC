@@ -1,4 +1,4 @@
-package pers.mrwangx.tools.qqmusic.util;
+package pers.mrwangx.tools.musictool.util;
 
 import com.alibaba.fastjson.JSONObject;
 import org.jsoup.Connection;
@@ -7,11 +7,10 @@ import pers.mrwangx.tool.musictool.MusicAPIHolder;
 import pers.mrwangx.tool.musictool.api.impl.QQMusicAPI;
 import pers.mrwangx.tool.musictool.config.MusicAPIConfig;
 import pers.mrwangx.tool.musictool.entity.Song;
-import pers.mrwangx.tools.qqmusic.entity.SongProperty;
+import pers.mrwangx.tools.musictool.entity.SongProperty;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 

@@ -2,6 +2,7 @@
 
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXListView?>
+<?import com.jfoenix.controls.JFXRadioButton?>
 <?import com.jfoenix.controls.JFXSpinner?>
 <?import com.jfoenix.controls.JFXTextField?>
 <?import javafx.geometry.Insets?>
@@ -13,6 +14,24 @@
 
 <AnchorPane fx:id="root" prefHeight="766.0" prefWidth="930.0" stylesheets="@../css/style.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
     <children>
+        <ImageView fx:id="logo" fitHeight="53.0" fitWidth="88.0" layoutX="26.0" layoutY="27.0" pickOnBounds="true" preserveRatio="true">
+            <image>
+                <Image url="@../img/music_logo_red.png" />
+            </image>
+        </ImageView>
+      <JFXSpinner fx:id="spinner" layoutX="14.0" layoutY="18.0" prefHeight="71.0" prefWidth="78.0" visible="false" />
+      <HBox alignment="CENTER_LEFT" layoutX="173.0" layoutY="24.0" prefHeight="59.0" prefWidth="306.0" spacing="10.0">
+         <padding>
+            <Insets right="20.0" />
+         </padding>
+         <children>
+            <JFXRadioButton text="QQ" />
+            <JFXRadioButton text="网易" />
+            <JFXRadioButton text="酷狗" />
+            <JFXRadioButton text="酷我" />
+            <JFXRadioButton text="百度" />
+         </children>
+      </HBox>
         <HBox alignment="CENTER_RIGHT" layoutX="436.0" layoutY="24.0" prefHeight="59.0" prefWidth="344.0" spacing="10.0" AnchorPane.rightAnchor="0.0">
             <children>
                 <JFXTextField id="keywordInput" fx:id="keywordInput" prefHeight="39.0" prefWidth="217.0" promptText="输入关键词" />
@@ -30,11 +49,5 @@
             <JFXListView fx:id="songsListView" layoutX="4.0" layoutY="-2.0" prefHeight="577.0" prefWidth="922.0" />
          </children>
       </AnchorPane>
-        <ImageView fx:id="logo" fitHeight="53.0" fitWidth="88.0" layoutX="14.0" layoutY="27.0" pickOnBounds="true" preserveRatio="true">
-            <image>
-                <Image url="@../img/music_logo_red.png" />
-            </image>
-        </ImageView>
-      <JFXSpinner fx:id="spinner" layoutX="161.0" layoutY="38.0" prefHeight="32.0" prefWidth="30.0" visible="false" />
     </children>
 </AnchorPane>

@@ -1,4 +1,4 @@
-package pers.mrwangx.tools.qqmusic.controller;
+package pers.mrwangx.tools.musictool.controller;
 
 import com.jfoenix.animation.alert.JFXAlertAnimation;
 import com.jfoenix.controls.*;
@@ -21,10 +21,10 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import pers.mrwangx.tool.musictool.entity.Song;
-import pers.mrwangx.tools.qqmusic.App;
-import pers.mrwangx.tools.qqmusic.service.Data;
-import pers.mrwangx.tools.qqmusic.util.FileUtil;
-import pers.mrwangx.tools.qqmusic.util.QQMusicUtil;
+import pers.mrwangx.tools.musictool.App;
+import pers.mrwangx.tools.musictool.service.Data;
+import pers.mrwangx.tools.musictool.util.FileUtil;
+import pers.mrwangx.tools.musictool.util.QQMusicUtil;
 
 import java.awt.*;
 import java.io.File;
@@ -53,7 +53,7 @@ public class MainController implements Initializable {
 
     private Stage stage;
     private JFXAlert<Label> alert;
-    private Label alertMessage;
+    private Label alertLabel;
     private MediaPlayer mediaPlayer;
     private Media media;
     private Song crtSong;
@@ -260,8 +260,8 @@ public class MainController implements Initializable {
      */
     public void initAlert() {
         JFXDialogLayout layout = new JFXDialogLayout();
-        alertMessage = new Label();
-        layout.setBody(alertMessage);
+        alertLabel = new Label();
+        layout.setBody(alertLabel);
         alert = new JFXAlert<>(stage);
         alert.setOverlayClose(true);
         alert.setAnimation(JFXAlertAnimation.TOP_ANIMATION);
@@ -276,7 +276,7 @@ public class MainController implements Initializable {
      * @param message 提示信息
      */
     public void alert(String message) {
-        alertMessage.setText(message);
+        alertLabel.setText(message);
         alert.showAndWait();
     }
 
@@ -315,7 +315,7 @@ public class MainController implements Initializable {
             Platform.runLater(() -> {
                 if (!song.getSongid().matches("^\\s*$")) {
                     Image image = likeImg;
-                    for (Song s : myFavoriteController.getData()) {
+                    for (Song s : myFavoriteController.getSongs()) {
                         if (s.getSongid().equals(song.getSongid())) {
                             image = likeFillImg;
                             break;
@@ -371,7 +371,7 @@ public class MainController implements Initializable {
 
                         mediaPlayer.setOnEndOfMedia(() -> {
                             LOGGER.info("歌曲放完了");
-                            if (crtindex() > -1 && crtindex() < data.getData().size() - 1 && !data.getData().isEmpty()) {
+                            if (crtindex() > -1 && crtindex() < data.getSongs().size() - 1 && !data.getSongs().isEmpty()) {
                                 playMusic(data.get(crtindexInc()));
                             }
                         });
@@ -391,7 +391,7 @@ public class MainController implements Initializable {
      * 上一首
      */
     public void preSong() {
-        if (crtindex() > 0 && !data.getData().isEmpty()) {
+        if (crtindex() > 0 && !data.getSongs().isEmpty()) {
             playMusic(data.get(crtindexDec()));
         }
     }
@@ -411,7 +411,7 @@ public class MainController implements Initializable {
      * 下一首
      */
     public void nextSong() {
-        if (crtindex() > -1 && crtindex() < data.getData().size() - 1 && !data.getData().isEmpty()) {
+        if (crtindex() > -1 && crtindex() < data.getSongs().size() - 1 && !data.getSongs().isEmpty()) {
             playMusic(data.get(crtindexInc()));
         }
     }

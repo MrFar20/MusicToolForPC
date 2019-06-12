@@ -1,10 +1,10 @@
-package pers.mrwangx.tools.qqmusic.util;
+package pers.mrwangx.tools.musictool.util;
 
 import com.alibaba.fastjson.JSON;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import pers.mrwangx.tool.musictool.entity.Song;
-import pers.mrwangx.tools.qqmusic.App;
+import pers.mrwangx.tools.musictool.App;
 
 import java.io.*;
 import java.net.MalformedURLException;

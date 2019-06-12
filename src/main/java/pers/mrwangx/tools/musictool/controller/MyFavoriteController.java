@@ -1,18 +1,18 @@
-package pers.mrwangx.tools.qqmusic.controller;
+package pers.mrwangx.tools.musictool.controller;
 
 import com.jfoenix.controls.JFXListView;
 import com.jfoenix.controls.JFXTextField;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
 import javafx.scene.layout.Pane;
 import pers.mrwangx.tool.musictool.entity.Song;
-import pers.mrwangx.tools.qqmusic.adapter.SongsListViewAdapter;
-import pers.mrwangx.tools.qqmusic.service.Data;
-import pers.mrwangx.tools.qqmusic.util.FileUtil;
+import pers.mrwangx.tools.musictool.cell.SongsListViewCell;
+import pers.mrwangx.tools.musictool.service.Data;
+import pers.mrwangx.tools.musictool.util.FileUtil;
 
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Logger;
@@ -32,16 +32,15 @@ public class MyFavoriteController implements Initializable, Data<Song> {
     private MainController mainController;
 
     private static final double COLUMNS = 6.1;
-    private List<Song> data = new ArrayList<>();
+    private ObservableList<Song> songs = FXCollections.observableArrayList();
     private int crtindex = -1;
-    private SongsListViewAdapter songsListViewAdapter;
 
     @FXML
     private Pane root;
     @FXML
     private JFXTextField searchWordInput;
     @FXML
-    private JFXListView<Parent> songsListView;
+    private JFXListView<Song> songsListView;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -51,7 +50,8 @@ public class MyFavoriteController implements Initializable, Data<Song> {
     }
 
     private void initSongsListView() {
-        songsListViewAdapter = new SongsListViewAdapter(data, songsListView, this, "/fxml/songsitem.fxml");
+        songsListView.setItems(songs);
+        songsListView.setCellFactory(param -> new SongsListViewCell(this));
     }
 
     private void initSearch() {
@@ -79,9 +79,9 @@ public class MyFavoriteController implements Initializable, Data<Song> {
      */
     public boolean removeFromMyFavorite(Song s) {
         if (s != null) {
-            for (int i = 0; i < data.size(); i++) {
-                if (data.get(i).getSongid().equals(s.getSongid())) {
-                    songsListViewAdapter.remove(i);
+            for (int i = 0; i < songs.size(); i++) {
+                if (songs.get(i).getSongid().equals(s.getSongid())) {
+                    songs.remove(i);
                     Song crtSong = mainController.getCrtSong();
                     if (s.getSongid().equals(crtSong == null ? null : crtSong.getSongid())) mainController.setToLikeImg();
                     FileUtil.delSongProperty(s.getSongid(), FileUtil.getFavorDir());
@@ -98,12 +98,12 @@ public class MyFavoriteController implements Initializable, Data<Song> {
      * @return
      */
     public boolean addToMyFavorite(Song s) {
-        for (Song sp : data) {
+        for (Song sp : songs) {
             if (sp.getSongid().equals(s.getSongid())) {
                 return false;
             }
         }
-        songsListViewAdapter.add(s);
+        songs.add(s);
         Song crtSong = mainController.getCrtSong();
         if (s.getSongid().equals(crtSong == null ? null : crtSong.getSongid())) mainController.setToLikeFillImg();
         FileUtil.saveSong(s, FileUtil.getFavorDir());
@@ -111,23 +111,24 @@ public class MyFavoriteController implements Initializable, Data<Song> {
     }
 
     @Override
-    public List<Song> getData() {
-        return data;
+    public List<Song> getSongs() {
+        return songs;
     }
 
     @Override
-    public void setData(List<Song> data) {
-        songsListViewAdapter.addAll(data);
+    public void setSongs(List<Song> songs) {
+        this.songs.clear();
+        this.songs.addAll(songs);
     }
 
     @Override
     public Song get(int index) {
-        return data.get(index);
+        return songs.get(index);
     }
 
     @Override
     public void add(Song e) {
-        songsListViewAdapter.add(e);
+        songs.add(e);
     }
 
     @Override

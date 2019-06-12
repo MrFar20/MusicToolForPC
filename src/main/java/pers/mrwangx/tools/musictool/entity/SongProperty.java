@@ -1,11 +1,10 @@
-package pers.mrwangx.tools.qqmusic.entity;
+package pers.mrwangx.tools.musictool.entity;
 
 import com.alibaba.fastjson.annotation.JSONField;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 import javafx.beans.property.SimpleStringProperty;
-import pers.mrwangx.tool.musictool.config.MusicAPIConfig;
 import pers.mrwangx.tool.musictool.entity.Song;
-import pers.mrwangx.tools.qqmusic.util.QQMusicUtil;
+import pers.mrwangx.tools.musictool.util.QQMusicUtil;
 
 import java.io.Serializable;
 

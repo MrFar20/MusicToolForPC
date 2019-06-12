@@ -1,4 +1,4 @@
-package pers.mrwangx.tools.qqmusic.service;
+package pers.mrwangx.tools.musictool.service;
 
 import java.util.List;
 
@@ -13,12 +13,12 @@ public interface Data<T> {
     /**
      * @return
      */
-    List<T> getData();
+    List<T> getSongs();
 
     /**
-     * @param data
+     * @param songs
      */
-    void setData(List<T> data);
+    void setSongs(List<T> songs);
 
     /**
      * @param index

@@ -1,4 +1,4 @@
-package pers.mrwangx.tools.qqmusic;
+package pers.mrwangx.tools.musictool;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;

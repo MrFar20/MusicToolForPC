@@ -1,4 +1,4 @@
-package pers.mrwangx.tools.qqmusic.controller;
+package pers.mrwangx.tools.musictool.controller;
 
 import com.jfoenix.controls.*;
 import javafx.collections.FXCollections;
@@ -6,20 +6,18 @@ import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.Pane;
 import pers.mrwangx.tool.musictool.entity.Song;
-import pers.mrwangx.tools.qqmusic.adapter.SongsListViewAdapter;
-import pers.mrwangx.tools.qqmusic.cell.SongsListViewCell;
-import pers.mrwangx.tools.qqmusic.service.Data;
-import pers.mrwangx.tools.qqmusic.util.QQMusicUtil;
+import pers.mrwangx.tools.musictool.cell.SongsListViewCell;
+import pers.mrwangx.tools.musictool.service.Data;
+import pers.mrwangx.tools.musictool.util.QQMusicUtil;
 
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Logger;
@@ -46,7 +44,6 @@ public class SearchController implements Initializable, Data<Song> {
     private boolean isToMaxPage = false;
     private String crtKeyword = null;
     private ObservableList<Song> songs = FXCollections.observableArrayList();
-    private SongsListViewAdapter songsListViewAdapter;
 
     private Tooltip tooltip = new Tooltip("鼠标左双击播放|右单击收藏|右双击下载");
 
@@ -63,6 +60,17 @@ public class SearchController implements Initializable, Data<Song> {
     @FXML
     private JFXSpinner spinner;
 
+    @FXML
+    private JFXCheckBox choice_tencent;
+    @FXML
+    private JFXCheckBox choice_netease;
+    @FXML
+    private JFXCheckBox choice_kugou;
+    @FXML
+    private JFXCheckBox choice_kuwo;
+    @FXML
+    private JFXCheckBox choice_baidu;
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -77,9 +85,7 @@ public class SearchController implements Initializable, Data<Song> {
                 searchToAdd();
             }
         });
-        songsListView.setCellFactory(param -> {
-            return new SongsListViewCell();
-        });
+        songsListView.setCellFactory(param -> new SongsListViewCell(this));
         songsListView.setItems(songs);
     }
 
@@ -89,7 +95,6 @@ public class SearchController implements Initializable, Data<Song> {
                 searchToReset();
             }
         });
-
         keywordInput.setOnKeyPressed(event -> {
             if (event.getCode() == KeyCode.ENTER) {
                 searchToReset();
@@ -116,7 +121,7 @@ public class SearchController implements Initializable, Data<Song> {
      * @param keyword 关键词
      */
     private void search(int pagenum, String keyword) {
-        if (!searchBtn.disabledProperty().get() && !isToMaxPage) {
+        if (keyword != null && !keyword.matches("^\\s+|$") && !searchBtn.disabledProperty().get() && !isToMaxPage) {
             LOGGER.info("搜索{pagenum:" + pagenum + ",keyword:" + crtKeyword + "}");
             reverse();
             int size = songs.size() - 1;
@@ -159,13 +164,13 @@ public class SearchController implements Initializable, Data<Song> {
     }
 
     @Override
-    public List<Song> getData() {
+    public List<Song> getSongs() {
         return songs;
     }
 
     @Override
-    public void setData(List<Song> data) {
-        this.songs = songs;
+    public void setSongs(List<Song> songs) {
+        this.songs = this.songs;
     }
 
     @Override

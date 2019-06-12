@@ -1,7 +1,7 @@
-package pers.mrwangx.tools.qqmusic.service;
+package pers.mrwangx.tools.musictool.service;
 
 import javafx.concurrent.Task;
-import pers.mrwangx.tools.qqmusic.entity.SongProperty;
+import pers.mrwangx.tools.musictool.entity.SongProperty;
 
 /**
  * \* Author: MrWangx
