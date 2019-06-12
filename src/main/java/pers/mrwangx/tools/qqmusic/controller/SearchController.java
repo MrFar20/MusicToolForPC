@@ -1,25 +1,25 @@
 package pers.mrwangx.tools.qqmusic.controller;
 
 import com.jfoenix.controls.*;
-import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
 import javafx.scene.control.Tooltip;
-import javafx.scene.control.TreeItem;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.Pane;
+import pers.mrwangx.tool.musictool.entity.Song;
+import pers.mrwangx.tools.qqmusic.adapter.SongsListViewAdapter;
+import pers.mrwangx.tools.qqmusic.cell.SongsListViewCell;
 import pers.mrwangx.tools.qqmusic.service.Data;
-import pers.mrwangx.tools.qqmusic.util.FileUtil;
 import pers.mrwangx.tools.qqmusic.util.QQMusicUtil;
-import pers.mrwangx.tools.qqmusic.entity.SongPropertyV2;
 
-import java.io.File;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Logger;
@@ -29,7 +29,9 @@ import java.util.logging.Logger;
  * @description
  * @Date 2019/3/9 18:05
  *****/
-public class SearchController implements Initializable, Data<SongPropertyV2> {
+public class SearchController implements Initializable, Data<Song> {
+
+    public static SearchController searchController = null;
 
     private static final Logger LOGGER = Logger.getLogger("SearchController");
 
@@ -41,8 +43,10 @@ public class SearchController implements Initializable, Data<SongPropertyV2> {
 
     private int crtindex = -1;
     private int pagenum = 0;
+    private boolean isToMaxPage = false;
     private String crtKeyword = null;
-    private ObservableList<SongPropertyV2> data = FXCollections.observableArrayList();
+    private ObservableList<Song> songs = FXCollections.observableArrayList();
+    private SongsListViewAdapter songsListViewAdapter;
 
     private Tooltip tooltip = new Tooltip("鼠标左双击播放|右单击收藏|右双击下载");
 
@@ -53,7 +57,7 @@ public class SearchController implements Initializable, Data<SongPropertyV2> {
     @FXML
     private JFXButton searchBtn;
     @FXML
-    private JFXTreeTableView<SongPropertyV2> resultTable;
+    private JFXListView<Song> songsListView;
     @FXML
     private ImageView logo;
     @FXML
@@ -62,116 +66,21 @@ public class SearchController implements Initializable, Data<SongPropertyV2> {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        initTable();
+        searchController = this;
+        initSongListView();
         initInputControls();
     }
 
-    private void initTable() {
-        resultTable.setPrefWidth(root.getPrefWidth());
-
-        //滑到末尾加载更多
-        resultTable.setOnScroll(event -> {
-            if (event.getTextDeltaY() < 0 && pagenum < MAX_PAGE_NUM) {
+    private void initSongListView() {
+        songsListView.setOnScroll(event -> {
+            if (event.getTextDeltaY() < 0 && !isToMaxPage) {
                 searchToAdd();
             }
         });
-
-        resultTable.setColumnResizePolicy(param -> {
-            return false;
+        songsListView.setCellFactory(param -> {
+            return new SongsListViewCell();
         });
-
-        JFXTreeTableColumn<SongPropertyV2, String> nameColumn = new JFXTreeTableColumn<>("歌名");
-        nameColumn.setPrefWidth(resultTable.getPrefWidth() / COLUMNS);
-        nameColumn.setCellValueFactory(param -> {
-            if (nameColumn.validateValue(param)) {
-                return param.getValue().getValue().nameProperty();
-            } else {
-                return nameColumn.getComputedValue(param);
-            }
-        });
-
-
-
-        JFXTreeTableColumn<SongPropertyV2, String> singerColumn = new JFXTreeTableColumn<>("歌手");
-        singerColumn.setPrefWidth(resultTable.getPrefWidth() / COLUMNS);
-        singerColumn.setCellValueFactory(param -> {
-            if (singerColumn.validateValue(param)) {
-                return param.getValue().getValue().singerProperty();
-            } else {
-                return singerColumn.getComputedValue(param);
-            }
-        });
-
-        JFXTreeTableColumn<SongPropertyV2, String> albumnameColumn = new JFXTreeTableColumn<>("专辑名");
-        albumnameColumn.setPrefWidth(resultTable.getPrefWidth() / COLUMNS);
-        albumnameColumn.setCellValueFactory(param -> {
-            if (albumnameColumn.validateValue(param)) {
-                return param.getValue().getValue().albumnameProperty();
-            } else {
-                return albumnameColumn.getComputedValue(param);
-            }
-        });
-
-        JFXTreeTableColumn<SongPropertyV2, String> subtitleColumn = new JFXTreeTableColumn<>("歌名");
-        subtitleColumn.setPrefWidth(resultTable.getPrefWidth() / COLUMNS);
-        subtitleColumn.setCellValueFactory(param -> {
-            if (subtitleColumn.validateValue(param)) {
-                return param.getValue().getValue().aliaProperty();
-            } else {
-                return subtitleColumn.getComputedValue(param);
-            }
-        });
-
-        JFXTreeTableColumn<SongPropertyV2, String> timeColumn = new JFXTreeTableColumn<>("时长");
-        timeColumn.setPrefWidth(resultTable.getPrefWidth() / COLUMNS);
-        timeColumn.setCellValueFactory(param -> {
-            if (timeColumn.validateValue(param)) {
-                return param.getValue().getValue().durationProperty();
-            } else {
-                return timeColumn.getComputedValue(param);
-            }
-        });
-
-        JFXTreeTableColumn<SongPropertyV2, String> statusColumn = new JFXTreeTableColumn<>("");
-        statusColumn.setPrefWidth(resultTable.getPrefWidth() / COLUMNS);
-        statusColumn.setCellValueFactory(param -> {
-            if (statusColumn.validateValue(param)) {
-                return param.getValue().getValue().statusProperty();
-            } else {
-                return statusColumn.getComputedValue(param);
-            }
-        });
-
-        //左双击播放|右单击收藏|右双击下载
-        resultTable.setRowFactory(param -> {
-            JFXTreeTableRow<SongPropertyV2> row = new JFXTreeTableRow<>();
-            row.setTooltip(tooltip);
-            row.setOnMouseClicked(event -> {
-                if (event.getClickCount() == 2 && event.getButton() == MouseButton.PRIMARY && (!row.isEmpty())) {
-                    crtindex = row.getIndex();
-                    mainController.playMusic(data.get(crtindex));
-                    mainController.setData(this);
-                } else if (event.getClickCount() == 1 && event.getButton() == MouseButton.SECONDARY && (!row.isEmpty())) {
-                    mainController.getMyFavoriteController().addToMyFavorite(data.get(row.getIndex()));
-                } else if (event.getClickCount() == 2 && event.getButton() == MouseButton.SECONDARY && (!row.isEmpty())) {
-                    LOGGER.info("下载" + data.get(row.getIndex()));
-                    SongPropertyV2 songProperty = data.get(row.getIndex());
-                    Task<Object> downloadTask = new Task<Object>() {
-                        @Override
-                        protected Object call() throws Exception {
-                            FileUtil.downloadSong(new File(mainController.getSavePath(), songProperty.getName() + " - " + songProperty.getSinger() + ".mp3"), songProperty.SONG_PLAY_URL(), songProperty.statusProperty());
-                            return null;
-                        }
-                    };
-                    new Thread(downloadTask).start();
-                }
-            });
-            return row;
-        });
-
-        resultTable.getColumns().setAll(nameColumn, singerColumn, albumnameColumn, subtitleColumn, timeColumn, statusColumn);
-        final TreeItem<SongPropertyV2> root = new RecursiveTreeItem<>(data, RecursiveTreeObject::getChildren);
-        resultTable.setRoot(root);
+        songsListView.setItems(songs);
     }
 
     private void initInputControls() {
@@ -194,9 +103,10 @@ public class SearchController implements Initializable, Data<SongPropertyV2> {
     }
 
     private void searchToReset() {
-        data.clear();
+        songs.clear();
         crtindex = -1;
-        search(pagenum = 1, crtKeyword = keywordInput.getText());
+        isToMaxPage = false;
+        search(pagenum = 0, crtKeyword = keywordInput.getText());
     }
 
     /**
@@ -206,20 +116,23 @@ public class SearchController implements Initializable, Data<SongPropertyV2> {
      * @param keyword 关键词
      */
     private void search(int pagenum, String keyword) {
-        if (!searchBtn.disabledProperty().get()) {
+        if (!searchBtn.disabledProperty().get() && !isToMaxPage) {
             LOGGER.info("搜索{pagenum:" + pagenum + ",keyword:" + crtKeyword + "}");
             reverse();
-            int oldsize = data.size();
-            Task<List<SongPropertyV2>> task = new Task<List<SongPropertyV2>>() {
+            int size = songs.size() - 1;
+            Task<List<Song>> task = new Task<List<Song>>() {
                 @Override
-                protected List<SongPropertyV2> call() throws Exception {
-                    return (List<SongPropertyV2>) QQMusicUtil.getSongPropertyFromSongs(QQMusicUtil.getSongsByKeyword(keyword, pagenum, PAGE_SIZE), SongPropertyV2.class);
+                protected List<Song> call() throws Exception {
+                    return QQMusicUtil.QQ_MUSIC_API.searchSong(keyword, pagenum, PAGE_SIZE);
                 }
             };
             task.setOnSucceeded(event -> {
-                data.addAll(task.getValue());
-                resultTable.scrollTo(oldsize);
                 reverse();
+                if (task.getValue() != null) {
+                    if (task.getValue().isEmpty()) isToMaxPage = true;
+                    songs.addAll(task.getValue());
+                    songsListView.scrollTo(size);
+                }
             });
             task.setOnFailed(event -> {
                 reverse();
@@ -228,10 +141,41 @@ public class SearchController implements Initializable, Data<SongPropertyV2> {
         }
     }
 
+
     private void reverse() {
-        resultTable.setDisable(resultTable.isDisabled() ? false : true);
+        songsListView.setDisable(songsListView.isDisabled() ? false : true);
         searchBtn.setDisable(searchBtn.isDisable() ? false : true);
         spinner.setVisible(spinner.isVisible() ? false : true);
+    }
+
+
+
+    public void setMainController(MainController mainController) {
+        this.mainController = mainController;
+    }
+
+    public Pane getRoot() {
+        return root;
+    }
+
+    @Override
+    public List<Song> getData() {
+        return songs;
+    }
+
+    @Override
+    public void setData(List<Song> data) {
+        this.songs = songs;
+    }
+
+    @Override
+    public Song get(int index) {
+        return songs.get(index);
+    }
+
+    @Override
+    public void add(Song e) {
+        songs.add(e);
     }
 
     @Override
@@ -242,33 +186,5 @@ public class SearchController implements Initializable, Data<SongPropertyV2> {
     @Override
     public void setCrtindex(int crtindex) {
         this.crtindex = crtindex;
-    }
-
-    @Override
-    public ObservableList<SongPropertyV2> getData() {
-        return data;
-    }
-
-    @Override
-    public void setData(ObservableList<SongPropertyV2> data) {
-        this.data = data;
-    }
-
-    @Override
-    public SongPropertyV2 get(int index) {
-        return data.get(index);
-    }
-
-    @Override
-    public void add(SongPropertyV2 e) {
-        data.add(e);
-    }
-
-    public void setMainController(MainController mainController) {
-        this.mainController = mainController;
-    }
-
-    public Pane getRoot() {
-        return root;
     }
 }

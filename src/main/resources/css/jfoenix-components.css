@@ -170,7 +170,7 @@
 }
 
 .jfx-list-cell:odd:selected > .jfx-rippler > StackPane, .jfx-list-cell:even:selected > .jfx-rippler > StackPane {
-    -fx-background-color: rgba(0, 0, 255, 0.2);
+    -fx-background-color: #ff3a3a60;
 }
 
 .jfx-list-cell {
@@ -187,7 +187,7 @@
 }
 
 .jfx-list-cell .jfx-rippler {
-    -jfx-rippler-fill: BLUE;
+    -jfx-rippler-fill: #ff3a3a;
 }
 
 .jfx-list-view {
@@ -196,7 +196,6 @@
     -jfx-cell-vertical-margin: 5.0;
     -jfx-vertical-gap: 10;
     -jfx-expanded: false;
-    -fx-pref-width: 200;
 }
 
 .jfx-toggle-button {

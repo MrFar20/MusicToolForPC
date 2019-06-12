@@ -1,17 +1,16 @@
 package pers.mrwangx.tools.qqmusic.util;
 
 import com.alibaba.fastjson.JSON;
-import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import pers.mrwangx.tool.musictool.entity.Song;
 import pers.mrwangx.tools.qqmusic.App;
-import pers.mrwangx.tools.qqmusic.entity.SongPropertyV2;
 
 import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLDecoder;
+import java.util.List;
 import java.util.Properties;
 import java.util.logging.Logger;
 
@@ -70,8 +69,8 @@ public class FileUtil {
      * @param dir
      * @return
      */
-    public static ObservableList<SongPropertyV2> readDataFromFile(File dir) {
-        ObservableList<SongPropertyV2> data = FXCollections.observableArrayList();
+    public static List<Song> readDataFromFile(File dir) {
+        List<Song> data = FXCollections.observableArrayList();
         if (!dir.exists()) {
             dir.mkdirs();
             return data;
@@ -80,7 +79,7 @@ public class FileUtil {
         for (File f : file) {
             LOGGER.info("读取[" + f.getAbsolutePath() + "]");
             try (BufferedReader reader = new BufferedReader(new FileReader(f))) {
-                data.add(new SongPropertyV2(JSON.toJavaObject(JSON.parseObject(reader.readLine()), Song.class)));
+                data.add(JSON.toJavaObject(JSON.parseObject(reader.readLine()), Song.class));
             } catch (IOException e) {
                 LOGGER.info("读取[" + f.getAbsolutePath() + "]失败");
                 LOGGER.warning(e + "");
@@ -93,21 +92,21 @@ public class FileUtil {
     /**
      * 歌曲信息存到本地
      *
-     * @param songProperty
+     * @param song
      * @param dir
      * @return
      */
-    public static int saveSongProperty(SongPropertyV2 songProperty, String dir) {
-        File file = new File(dir + File.separator + songProperty.getSongid() + ".data");
+    public static int saveSong(Song song, String dir) {
+        File file = new File(dir + File.separator + song.getSongid() + ".data");
         if (file.exists()) {
-            LOGGER.info("存储歌曲信息已存在:" + songProperty);
+            LOGGER.info("存储歌曲信息已存在:" + song);
         } else {
             try (FileWriter writer = new FileWriter(file)) {
-                writer.write(JSON.toJSONString(songProperty));
-                LOGGER.info("存储歌曲信息成功:" + songProperty);
+                writer.write(JSON.toJSONString(song));
+                LOGGER.info("存储歌曲信息成功:" + song);
             } catch (IOException e) {
                 file.delete();
-                LOGGER.info("存储歌曲信息错误:" + songProperty);
+                LOGGER.info("存储歌曲信息错误:" + song);
                 LOGGER.warning(e + "");
                 e.printStackTrace();
             }
@@ -199,7 +198,7 @@ public class FileUtil {
      * @param downloadUrl
      * @param status
      */
-    public static void downloadSong(File file, String downloadUrl, SimpleStringProperty status) {
+    public static void downloadSong(File file, String downloadUrl, StringProperty status) {
         status.set("建立连接...");
         try {
             URL url = new URL(downloadUrl);

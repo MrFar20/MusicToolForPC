@@ -1,6 +1,6 @@
 package pers.mrwangx.tools.qqmusic.service;
 
-import javafx.collections.ObservableList;
+import java.util.List;
 
 /**
  * \* Author: MrWangx
@@ -13,12 +13,12 @@ public interface Data<T> {
     /**
      * @return
      */
-    ObservableList<T> getData();
+    List<T> getData();
 
     /**
      * @param data
      */
-    void setData(ObservableList<T> data);
+    void setData(List<T> data);
 
     /**
      * @param index

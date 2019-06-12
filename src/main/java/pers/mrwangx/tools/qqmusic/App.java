@@ -63,7 +63,6 @@ public class App extends Application {
         searchFxmlLoader.setController(searchController);
         searchFxmlLoader.load();
 
-        myFavoriteController.setData(FileUtil.readDataFromFile(new File(FileUtil.getFavorDir())));
         FXMLLoader myFavoriteFxmlLoader = new FXMLLoader();
         myFavoriteFxmlLoader.setLocation(this.getClass().getResource("/fxml/my-favorite.fxml"));
         myFavoriteFxmlLoader.setBuilderFactory(new JavaFXBuilderFactory());
@@ -84,6 +83,7 @@ public class App extends Application {
 
         Parent root = mainFxmlLoader.getRoot();
         root.getStylesheets().add("/css/style.css");
+//        root.getStylesheets().add("/css/jfoenix-components.css");
 
         primaryStage.getIcons().add(new Image("/img/logo-title.png"));
         primaryStage.setTitle("MusicTool");
@@ -93,6 +93,7 @@ public class App extends Application {
 
         //alert组件初始化必须在stage.show()方法之后
         mainController.initAlert();
+        myFavoriteController.setData(FileUtil.readDataFromFile(new File(FileUtil.getFavorDir())));
     }
 
     @Override
@@ -113,7 +114,7 @@ public class App extends Application {
             file.mkdirs();
         }
         myFavoriteController.getData().forEach(e -> {
-            FileUtil.saveSongProperty(e, dir);
+            FileUtil.saveSong(e, dir);
         });
         LOGGER.info("保存收藏完成");
     }

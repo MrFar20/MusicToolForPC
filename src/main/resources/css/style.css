@@ -1,68 +1,3 @@
-.root {
-    -fx-background-color: white;
-}
-
-.jfx-spinner {
-    -fx-cursor: hand;
-}
-
-.combo-box-popup .list-view .jfx-list-cell {
-    -fx-text-fill: black;
-}
-
-.button {
-    -fx-cursor: hand;
-}
-
-/*#choosePane .button {*/
-/*    -fx-cursor: hand;*/
-/*    -jfx-button-type: RAISED;*/
-/*    -fx-text-fill: rgb(49, 194, 124);*/
-/*}*/
-
-#keywordInput {
-    -fx-background-color: transparent;
-    -fx-font-weight: BOLD;
-    -fx-prompt-text-fill: #808080;
-    -fx-alignment: bottom-left;
-    -fx-font-size: 14px;
-    -jfx-focus-color: #ff3a3a;
-    -jfx-unfocus-color: #4d4d4d;
-}
-
-#bottomHbox {
-
-}
-
-#logo {
-    -fx-cursor: hand;
-}
-
-#resultTable, #table {
-    -fx-tree-table-color: rgba(255, 58, 58, 0.4);
-    -fx-tree-table-rippler-color: rgba(255, 58, 58, 0.6);
-}
-
-.image-view {
-    -fx-cursor: hand;
-}
-
-#timeSlider, #volControl{
-    -jfx-default-thumb: #ff3a3a;
-    -jfx-default-track: #cccccc;
-}
-
-#searchBtn {
-    -fx-background-color: #ff3a3a;
-    -fx-text-fill: white;
-}
-
-#chooseDirBtn {
-    /*-fx-background-color: rgb(49, 194, 124);*/
-    /*-fx-text-fill: white;*/
-}
-
-
 /*******************************************************************************
 *                                                                              *
 * Tree Table View                                                              *
@@ -399,72 +334,6 @@
     -fx-padding: 0.7em 0.8em;
 }
 
-
-/*!********************************************************************************/
-/**                                                                              **/
-/** JFX Textfield                                                                **/
-/**                                                                              **/
-/********************************************************************************!*/
-
-/*.jfx-text-field, .jfx-password-field, .jfx-text-area {*/
-/*    -fx-background-color: transparent;*/
-/*    -fx-font-weight: BOLD;*/
-/*    -fx-prompt-text-fill: #808080;*/
-/*    -fx-alignment: top-left;*/
-/*    -fx-max-width: 300.0;*/
-/*    -fx-pref-width: 300.0;*/
-/*    -jfx-focus-color: #4059A9;*/
-/*    -jfx-unfocus-color: #4d4d4d;*/
-/*}*/
-
-/*.jfx-text-area .viewport {*/
-/*    -fx-background-color: #F4F4F4;*/
-/*}*/
-
-
-/*!* The main scrollbar **track** CSS class  *!*/
-/*.mylistview .scroll-bar:horizontal .track,*/
-/*.mylistview .scroll-bar:vertical .track {*/
-/*    -fx-background-color: transparent;*/
-/*    -fx-border-color: transparent;*/
-/*    -fx-background-radius: 0em;*/
-/*    -fx-border-radius: 2em;*/
-/*}*/
-
-/*!* The increment and decrement button CSS class of scrollbar *!*/
-/*.mylistview .scroll-bar:horizontal .increment-button,*/
-/*.mylistview .scroll-bar:horizontal .decrement-button {*/
-/*    -fx-background-color: transparent;*/
-/*    -fx-background-radius: 0em;*/
-/*    -fx-padding: 0 0 10 0;*/
-/*}*/
-
-/*!* The increment and decrement button CSS class of scrollbar *!*/
-
-/*.mylistview .scroll-bar:vertical .increment-button,*/
-/*.mylistview .scroll-bar:vertical .decrement-button {*/
-/*    -fx-background-color: transparent;*/
-/*    -fx-background-radius: 0em;*/
-/*    -fx-padding: 0 10 0 0;*/
-
-/*}*/
-
-/*.mylistview .scroll-bar .increment-arrow,*/
-/*.mylistview .scroll-bar .decrement-arrow {*/
-/*    -fx-shape: " ";*/
-/*    -fx-padding: 0;*/
-/*}*/
-
-/*!* The main scrollbar **thumb** CSS class which we drag every time (movable) *!*/
-/*.mylistview .scroll-bar:horizontal .thumb,*/
-/*.mylistview .scroll-bar:vertical .thumb {*/
-/*    -fx-background-color: derive(black, 90%);*/
-/*    -fx-background-insets: 2, 0, 0;*/
-/*    -fx-background-radius: 2em;*/
-/*}*/
-
-
-
 /*******************************************************************************
 *                                                                              *
 * JFX List View                                                                *
@@ -483,16 +352,17 @@
 
 .jfx-list-cell:filled:hover,
 .jfx-list-cell:selected .label {
-    -fx-text-fill: black;
+    -fx-text-fill: white;
 }
 
 .jfx-list-cell .jfx-rippler {
-    -jfx-rippler-fill: #5264AE;
+    -jfx-rippler-fill: #ff3a3a;
 }
+
 
 .jfx-list-cell:odd:selected > .jfx-rippler > StackPane,
 .jfx-list-cell:even:selected > .jfx-rippler > StackPane {
-    -fx-background-color: rgba(0.0, 0.0, 255.0, 0.2);
+    -fx-background-color: #ff3a3a60;
 }
 
 .jfx-list-view {
@@ -551,4 +421,77 @@
 
 .custom-jfx-list-view .jfx-list-cell:filled:hover .sublist-header > .drop-icon {
     -fx-background-color: BLACK;
+}
+
+
+
+
+/*******************************************************************************
+*                                                                              *
+* Mine                                                                         *
+*                                                                              *
+*******************************************************************************/
+.root {
+    -fx-background-color: white;
+}
+
+.jfx-spinner {
+
+    -fx-cursor: hand;
+}
+
+.combo-box-popup .list-view .jfx-list-cell {
+    -fx-text-fill: black;
+}
+
+.button {
+    -fx-cursor: hand;
+}
+
+/*#choosePane .button {*/
+/*    -fx-cursor: hand;*/
+/*    -jfx-button-type: RAISED;*/
+/*    -fx-text-fill: rgb(49, 194, 124);*/
+/*}*/
+
+#keywordInput {
+    -fx-background-color: transparent;
+    -fx-font-weight: BOLD;
+    -fx-prompt-text-fill: #808080;
+    -fx-alignment: bottom-left;
+    -fx-font-size: 14px;
+    -jfx-focus-color: #ff3a3a;
+    -jfx-unfocus-color: #4d4d4d;
+}
+
+#bottomHbox {
+
+}
+
+#logo {
+    -fx-cursor: hand;
+}
+
+#resultTable, #table {
+    -fx-tree-table-color: rgba(255, 58, 58, 0.4);
+    -fx-tree-table-rippler-color: rgba(255, 58, 58, 0.6);
+}
+
+.image-view {
+    -fx-cursor: hand;
+}
+
+#timeSlider, #volControl{
+    -jfx-default-thumb: #ff3a3a;
+    -jfx-default-track: #cccccc;
+}
+
+#searchBtn, #download {
+    -fx-background-color: #ff3a3a;
+    -fx-text-fill: white;
+}
+
+#chooseDirBtn {
+    /*-fx-background-color: rgb(49, 194, 124);*/
+    /*-fx-text-fill: white;*/
 }

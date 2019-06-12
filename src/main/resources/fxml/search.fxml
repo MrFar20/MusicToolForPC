@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXListView?>
 <?import com.jfoenix.controls.JFXSpinner?>
 <?import com.jfoenix.controls.JFXTextField?>
-<?import com.jfoenix.controls.JFXTreeTableView?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -27,7 +27,7 @@
         </HBox>
       <AnchorPane layoutY="95.0" prefHeight="577.0" prefWidth="764.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
          <children>
-                <JFXTreeTableView fx:id="resultTable" prefHeight="577.0" prefWidth="764.0" showRoot="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+            <JFXListView fx:id="songsListView" layoutX="4.0" layoutY="-2.0" prefHeight="577.0" prefWidth="922.0" />
          </children>
       </AnchorPane>
         <ImageView fx:id="logo" fitHeight="53.0" fitWidth="88.0" layoutX="14.0" layoutY="27.0" pickOnBounds="true" preserveRatio="true">

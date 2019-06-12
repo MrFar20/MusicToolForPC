@@ -4,6 +4,7 @@ import com.jfoenix.animation.alert.JFXAlertAnimation;
 import com.jfoenix.controls.*;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
@@ -19,8 +20,8 @@ import javafx.stage.DirectoryChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import pers.mrwangx.tool.musictool.entity.Song;
 import pers.mrwangx.tools.qqmusic.App;
-import pers.mrwangx.tools.qqmusic.entity.SongPropertyV2;
 import pers.mrwangx.tools.qqmusic.service.Data;
 import pers.mrwangx.tools.qqmusic.util.FileUtil;
 import pers.mrwangx.tools.qqmusic.util.QQMusicUtil;
@@ -41,19 +42,21 @@ import java.util.logging.Logger;
  **/
 public class MainController implements Initializable {
 
+    public static MainController mainController = null;
+
     private static final Logger LOGGER = Logger.getLogger("MainController");
     private static final String ABOUT_MESSAGE = "此软件供学习和交流用，请支持正版QQ音乐！！！！\n作者:MrWangx";
 
     private SearchController searchController;
     private MyFavoriteController myFavoriteController;
-    private Data<SongPropertyV2> data;
+    private Data<Song> data;
 
     private Stage stage;
     private JFXAlert<Label> alert;
     private Label alertMessage;
     private MediaPlayer mediaPlayer;
     private Media media;
-    private SongPropertyV2 crtSongProperty;
+    private Song crtSong;
 
     private boolean playing = false;
     private SimpleStringProperty savePath = new SimpleStringProperty(); //存储位置
@@ -116,6 +119,7 @@ public class MainController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        mainController = this;
         initChoosePane();
         initMediaControls();
         initDrawer();
@@ -211,11 +215,11 @@ public class MainController implements Initializable {
 
         //喜欢
         like.setOnMouseClicked(event -> {
-            if (crtSongProperty != null) {
+            if (crtSong != null) {
                 if (like.getImage() == likeImg) {
-                    myFavoriteController.addToMyFavorite(crtSongProperty);
+                    myFavoriteController.addToMyFavorite(crtSong);
                 } else {
-                    myFavoriteController.removeFromMyFavorite(crtSongProperty);
+                    myFavoriteController.removeFromMyFavorite(crtSong);
                 }
             }
         });
@@ -304,69 +308,79 @@ public class MainController implements Initializable {
     /**
      * 播放音乐
      *
-     * @param songProperty
+     * @param song
      */
-    public void playMusic(SongPropertyV2 songProperty) {
-        if (songProperty != null) {
+    public void playMusic(Song song) {
+        if (song != null) {
             Platform.runLater(() -> {
-                if (!songProperty.getSongid().matches("^\\s*$")) {
+                if (!song.getSongid().matches("^\\s*$")) {
                     Image image = likeImg;
-                    for (SongPropertyV2 s : myFavoriteController.getData()) {
-                        if (s.getSongid().equals(songProperty.getSongid())) {
+                    for (Song s : myFavoriteController.getData()) {
+                        if (s.getSongid().equals(song.getSongid())) {
                             image = likeFillImg;
                             break;
                         }
                     }
                     like.setImage(image);
-                    LOGGER.info("播放" + songProperty);
+                    LOGGER.info("播放" + song);
                     resetSongInfoDisplay();
-                    String resource = songProperty.SONG_PLAY_URL();
-                    LOGGER.info(resource);
-                    //缓存是否开启
-                    if (setCache.isSelected()) {
-                        File cacheFile = FileUtil.getSongCache(songProperty.getSongid());
-                        if (cacheFile == null) {
-                            File cf = FileUtil.saveSongCache(FileUtil.getRuntimeDir() + App.CACHE_DIR, songProperty.getSongid(), songProperty.SONG_PLAY_URL());
-                            String fUrl = FileUtil.fileToUrlString(cf);
-                            resource = cf == null ? resource : fUrl == null ? resource : fUrl;
-                        } else {
-                            String fUrl = FileUtil.fileToUrlString(cacheFile);
-                            resource = fUrl == null ? resource : fUrl;
+                    Task<String> songPlayUrlTask = new Task<String>() {
+                        @Override
+                        protected String call() throws Exception {
+                            return QQMusicUtil.getSongPlayUrl(song.getSongid());
                         }
-                    }
-                    LOGGER.info(resource);
-                    media = new Media(resource);
-
-                    mediaPlayer = new MediaPlayer(media);
-                    int time = Integer.parseInt(songProperty.getDuration());
-                    mediaPlayer.setOnReady(() -> {
-                        timeLabel.setText(String.format("%02d:%02d", time / 60, time % 60));
-                    });
-
-                    mediaPlayer.setOnError(() -> {
-                        alert("播放[" + songProperty.getName() + " - " + songProperty.getSinger() + "]失败");
-                    });
-                    //放歌进度条设置
-                    mediaPlayer.currentTimeProperty().addListener((observable, oldValue, newValue) -> {
-                        timeSlider.setValue(newValue.toMillis() / mediaPlayer.getStopTime().toMillis() * 100);
-                        int t = (int) mediaPlayer.getCurrentTime().toSeconds();
-                        crtTimeLabel.setText(String.format("%02d:%02d", t / 60, t % 60));
-                    });
-
-                    mediaPlayer.setVolume(volControl.getValue() / 100.00);
-                    volControl.valueProperty().addListener((observable, oldValue, newValue) -> {
-                        mediaPlayer.setVolume(newValue.doubleValue() / 100.00);
-                    });
-
-                    mediaPlayer.setOnEndOfMedia(() -> {
-                        if (crtindex() > -1 && crtindex() < data.getData().size() - 1 && !data.getData().isEmpty()) {
-                            playMusic(data.get(crtindexInc()));
+                    };
+                    songPlayUrlTask.setOnSucceeded(event -> {
+                       String resource = song.REAL_SONG_PLAY_URL();
+                        LOGGER.info(resource);
+                        //缓存是否开启
+                        if (setCache.isSelected()) {
+                            File cacheFile = FileUtil.getSongCache(song.getSongid());
+                            if (cacheFile == null) {
+                                File cf = FileUtil.saveSongCache(FileUtil.getRuntimeDir() + App.CACHE_DIR, song.getSongid(), song.REAL_SONG_PLAY_URL());
+                                String fUrl = FileUtil.fileToUrlString(cf);
+                                resource = cf == null ? resource : fUrl == null ? resource : fUrl;
+                            } else {
+                                String fUrl = FileUtil.fileToUrlString(cacheFile);
+                                resource = fUrl == null ? resource : fUrl;
+                            }
                         }
+                        LOGGER.info(resource);
+                        media = new Media(resource);
+
+                        mediaPlayer = new MediaPlayer(media);
+                        int time = song.getDuration();
+                        mediaPlayer.setOnReady(() -> {
+                            timeLabel.setText(String.format("%02d:%02d", time / 60, time % 60));
+                        });
+
+                        mediaPlayer.setOnError(() -> {
+                            alert("播放[" + song.getName() + " - " + song.getSinger() + "]失败");
+                        });
+                        //放歌进度条设置
+                        mediaPlayer.currentTimeProperty().addListener((observable, oldValue, newValue) -> {
+                            timeSlider.setValue(newValue.toMillis() / mediaPlayer.getStopTime().toMillis() * 100);
+                            int t = (int) mediaPlayer.getCurrentTime().toSeconds();
+                            crtTimeLabel.setText(String.format("%02d:%02d", t / 60, t % 60));
+                        });
+
+                        mediaPlayer.setVolume(volControl.getValue() / 100.00);
+                        volControl.valueProperty().addListener((observable, oldValue, newValue) -> {
+                            mediaPlayer.setVolume(newValue.doubleValue() / 100.00);
+                        });
+
+                        mediaPlayer.setOnEndOfMedia(() -> {
+                            LOGGER.info("歌曲放完了");
+                            if (crtindex() > -1 && crtindex() < data.getData().size() - 1 && !data.getData().isEmpty()) {
+                                playMusic(data.get(crtindexInc()));
+                            }
+                        });
+                        songinfoLabel.setText(song.getName() + " - " + song.getSinger());
+                        crtSong = song;
+                        albumImg.setImage(new Image(song.getImgurl()));
+                        playMusic();
                     });
-                    songinfoLabel.setText(songProperty.getName() + " - " + songProperty.getSinger());
-                    crtSongProperty = songProperty;
-                    albumImg.setImage(new Image(songProperty.getImgurl()));
-                    playMusic();
+                    new Thread(songPlayUrlTask).start();
                 }
             });
         }
@@ -471,11 +485,11 @@ public class MainController implements Initializable {
         this.stage = stage;
     }
 
-    public Data<SongPropertyV2> getData() {
+    public Data<Song> getData() {
         return data;
     }
 
-    public void setData(Data<SongPropertyV2> data) {
+    public void setData(Data<Song> data) {
         this.data = data;
     }
 
@@ -495,7 +509,7 @@ public class MainController implements Initializable {
         this.like.setImage(likeFillImg);
     }
 
-    public SongPropertyV2 getCrtSongProperty() {
-        return crtSongProperty;
+    public Song getCrtSong() {
+        return crtSong;
     }
 }

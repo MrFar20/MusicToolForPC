@@ -17,7 +17,7 @@
 <AnchorPane fx:id="root" prefHeight="766.0" prefWidth="764.0" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
     <children>
         <JFXDrawersStack fx:id="drawersStack" layoutY="1.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="692.0" prefWidth="940.0" AnchorPane.bottomAnchor="83.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="1.0" />
-        <JFXDrawer fx:id="leftDrawer" layoutX="10.0" layoutY="1.0" prefHeight="692.0" prefWidth="290.0">
+        <JFXDrawer fx:id="leftDrawer" layoutX="-290.0" layoutY="1.0" prefHeight="692.0" prefWidth="290.0">
          <children>
             <VBox fx:id="choosePane" prefHeight="766.0" prefWidth="290.0" spacing="10.0">
                <children>
@@ -36,7 +36,7 @@
                         </Label>
                      </children>
                   </VBox>
-                  <JFXButton fx:id="searchSongBtn" alignment="BASELINE_LEFT" prefHeight="32.0" prefWidth="290.0" ripplerFill="#31c27c" text="搜索歌曲">
+                  <JFXButton fx:id="searchSongBtn" alignment="BASELINE_LEFT" prefHeight="32.0" prefWidth="290.0" ripplerFill="#ff3a3a" text="搜索歌曲">
                      <font>
                         <Font size="18.0" />
                      </font>
@@ -48,7 +48,7 @@
                         </ImageView>
                      </graphic>
                   </JFXButton>
-                  <JFXButton fx:id="myFavoriteBtn" alignment="BASELINE_LEFT" prefHeight="32.0" prefWidth="290.0" ripplerFill="#31c27c" text="我的收藏">
+                  <JFXButton fx:id="myFavoriteBtn" alignment="BASELINE_LEFT" prefHeight="32.0" prefWidth="290.0" ripplerFill="#ff3a3a" text="我的收藏">
                      <font>
                         <Font size="18.0" />
                      </font>
@@ -65,7 +65,7 @@
                         <Insets />
                      </opaqueInsets>
                      <children>
-                        <JFXButton fx:id="chooseDirBtn" alignment="BASELINE_LEFT" prefHeight="25.0" prefWidth="290.0" text="下载位置">
+                        <JFXButton fx:id="chooseDirBtn" alignment="BASELINE_LEFT" prefHeight="25.0" prefWidth="290.0" ripplerFill="#ff3a3a" text="下载位置">
                            <font>
                               <Font size="18.0" />
                            </font>
