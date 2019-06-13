@@ -7,7 +7,9 @@ import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
+import pers.mrwangx.tool.musictool.config.MusicAPIConfig;
 import pers.mrwangx.tool.musictool.entity.Song;
+import pers.mrwangx.tools.musictool.App;
 import pers.mrwangx.tools.musictool.controller.MainController;
 import pers.mrwangx.tools.musictool.controller.MyFavoriteController;
 import pers.mrwangx.tools.musictool.service.Data;
@@ -48,7 +50,25 @@ public class SongsListViewCell extends JFXListCell<Song> {
                 });
                 Label songname = (Label) p.lookup("#songname");
                 Label songinfo = (Label) p.lookup("#songinfo");
-                Label status = (Label) p.lookup("#status");
+//                Label status = (Label) p.lookup("#status");
+                ImageView logo = (ImageView) p.lookup("#logo");
+                switch (item.getMusicType()) {
+                    case MusicAPIConfig.MUSIC_TYPE_TECENT:
+                        logo.setImage(App.qqmusic_logo);
+                        break;
+                    case MusicAPIConfig.MUSIC_TYPE_NETEASE:
+                        logo.setImage(App.netease_logo);
+                        break;
+                    case MusicAPIConfig.MUSIC_TYPE_KUGOU:
+                        logo.setImage(App.kugou_logo);
+                        break;
+                    case MusicAPIConfig.MUSIC_TYPE_KUWO:
+                        logo.setImage(App.kuwo_logo);
+                        break;
+                    case MusicAPIConfig.MUSIC_TYPE_BAIDU:
+                        logo.setImage(App.baidu_logo);
+                        break;
+                }
                 ImageView download = (ImageView) p.lookup("#download");
                 ImageView like = (ImageView) p.lookup("#like");
                 songname.setText(item.getName());
@@ -81,8 +101,6 @@ public class SongsListViewCell extends JFXListCell<Song> {
                             return null;
                         }
                     };
-                    status.textProperty().bind(downloadTask.messageProperty());
-//                    status.textProperty().addListener(new );
                     new Thread(downloadTask).start();
                 });
                 like.setOnMouseClicked(event -> {

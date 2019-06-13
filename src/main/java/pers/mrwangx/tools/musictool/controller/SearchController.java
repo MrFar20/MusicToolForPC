@@ -6,12 +6,16 @@ import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.Pane;
+import pers.mrwangx.tool.musictool.MusicAPIHolder;
+import pers.mrwangx.tool.musictool.api.MusicAPI;
+import pers.mrwangx.tool.musictool.config.MusicAPIConfig;
 import pers.mrwangx.tool.musictool.entity.Song;
 import pers.mrwangx.tools.musictool.cell.SongsListViewCell;
 import pers.mrwangx.tools.musictool.service.Data;
@@ -61,15 +65,16 @@ public class SearchController implements Initializable, Data<Song> {
     private JFXSpinner spinner;
 
     @FXML
-    private JFXCheckBox choice_tencent;
+    private JFXRadioButton choice_tencent;
     @FXML
-    private JFXCheckBox choice_netease;
+    private JFXRadioButton choice_netease;
     @FXML
-    private JFXCheckBox choice_kugou;
+    private JFXRadioButton choice_kugou;
     @FXML
-    private JFXCheckBox choice_kuwo;
+    private JFXRadioButton choice_kuwo;
     @FXML
-    private JFXCheckBox choice_baidu;
+    private JFXRadioButton choice_baidu;
+    private ToggleGroup apiChoice;
 
 
     @Override
@@ -100,6 +105,24 @@ public class SearchController implements Initializable, Data<Song> {
                 searchToReset();
             }
         });
+
+        apiChoice = new ToggleGroup();
+        choice_tencent.setToggleGroup(apiChoice);
+        choice_tencent.setUserData(MusicAPIConfig.MUSIC_TYPE_TECENT);
+
+        choice_netease.setToggleGroup(apiChoice);
+        choice_netease.setUserData(MusicAPIConfig.MUSIC_TYPE_NETEASE);
+
+        choice_kugou.setToggleGroup(apiChoice);
+        choice_kugou.setUserData(MusicAPIConfig.MUSIC_TYPE_KUGOU);
+
+        choice_kuwo.setToggleGroup(apiChoice);
+        choice_kuwo.setUserData(MusicAPIConfig.MUSIC_TYPE_KUWO);
+
+        choice_baidu.setToggleGroup(apiChoice);
+        choice_baidu.setUserData(MusicAPIConfig.MUSIC_TYPE_BAIDU);
+
+        apiChoice.selectToggle(choice_tencent);
     }
 
 
@@ -128,13 +151,15 @@ public class SearchController implements Initializable, Data<Song> {
             Task<List<Song>> task = new Task<List<Song>>() {
                 @Override
                 protected List<Song> call() throws Exception {
-                    return QQMusicUtil.QQ_MUSIC_API.searchSong(keyword, pagenum, PAGE_SIZE);
+                    return getMusicAPI().searchSong(keyword, pagenum, PAGE_SIZE);
                 }
             };
             task.setOnSucceeded(event -> {
                 reverse();
                 if (task.getValue() != null) {
-                    if (task.getValue().isEmpty()) isToMaxPage = true;
+                    if (task.getValue().size() < PAGE_SIZE) {
+                        isToMaxPage = true;
+                    };
                     songs.addAll(task.getValue());
                     songsListView.scrollTo(size);
                 }
@@ -153,6 +178,10 @@ public class SearchController implements Initializable, Data<Song> {
         spinner.setVisible(spinner.isVisible() ? false : true);
     }
 
+    private MusicAPI getMusicAPI() {
+        String MUSIC_API_TYPE = (String) apiChoice.getSelectedToggle().getUserData();
+        return MusicAPIHolder.getAPI(MUSIC_API_TYPE);
+    }
 
 
     public void setMainController(MainController mainController) {

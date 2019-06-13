@@ -25,11 +25,11 @@
             <Insets right="20.0" />
          </padding>
          <children>
-            <JFXRadioButton text="QQ" />
-            <JFXRadioButton text="网易" />
-            <JFXRadioButton text="酷狗" />
-            <JFXRadioButton text="酷我" />
-            <JFXRadioButton text="百度" />
+            <JFXRadioButton fx:id="choice_tencent" text="QQ" />
+            <JFXRadioButton fx:id="choice_netease" text="网易" />
+            <JFXRadioButton fx:id="choice_kugou" text="酷狗" />
+            <JFXRadioButton fx:id="choice_kuwo" text="酷我" />
+            <JFXRadioButton fx:id="choice_baidu" text="百度" />
          </children>
       </HBox>
         <HBox alignment="CENTER_RIGHT" layoutX="436.0" layoutY="24.0" prefHeight="59.0" prefWidth="344.0" spacing="10.0" AnchorPane.rightAnchor="0.0">

@@ -107,6 +107,7 @@ public class MyFavoriteController implements Initializable, Data<Song> {
         Song crtSong = mainController.getCrtSong();
         if (s.getSongid().equals(crtSong == null ? null : crtSong.getSongid())) mainController.setToLikeFillImg();
         FileUtil.saveSong(s, FileUtil.getFavorDir());
+        mainController.alert("收藏歌曲[" + s.getName() + "-" + s.getSinger() + "]成功");
         return true;
     }
 

@@ -29,6 +29,12 @@ public class App extends Application {
     }
 
     public static App app = null;
+    public static Image qqmusic_logo = null;
+    public static Image netease_logo = null;
+    public static Image kugou_logo = null;
+    public static Image kuwo_logo = null;
+    public static Image baidu_logo = null;
+
 
     private static final Logger LOGGER = Logger.getLogger("App");
 
@@ -53,7 +59,7 @@ public class App extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        app = this;
+        initResouce();
         stage = primaryStage;
         LOGGER.info(FileUtil.getRuntimeDir());
 
@@ -122,6 +128,15 @@ public class App extends Application {
             FileUtil.saveSong(e, dir);
         });
         LOGGER.info("保存收藏完成");
+    }
+
+    private void initResouce() {
+        app = this;
+        qqmusic_logo = new Image(this.getClass().getResource("/img/qqmusic_logo.png").toExternalForm());
+        netease_logo = new Image(this.getClass().getResource("/img/netease_cloud_music_logo.png").toExternalForm());
+        kugou_logo = new Image(this.getClass().getResource("/img/kugou_music_logo.png").toExternalForm());
+        kuwo_logo = new Image(this.getClass().getResource("/img/kuwo_music_logo.png").toExternalForm());
+        baidu_logo = new Image(this.getClass().getResource("/img/baidu_music_logo.png").toExternalForm());
     }
 
 

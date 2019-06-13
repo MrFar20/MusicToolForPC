@@ -8,13 +8,13 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="59.0" prefWidth="734.0" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+<HBox alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="59.0" prefWidth="875.0" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <VBox prefHeight="59.0" prefWidth="516.0">
+      <VBox prefHeight="59.0" prefWidth="692.0">
          <children>
             <Label fx:id="songname" prefHeight="35.0" prefWidth="451.0" text="园游会">
                <font>
-                  <Font size="20.0" />
+                  <Font name="System Bold" size="16.0" />
                </font>
                <VBox.margin>
                   <Insets />
@@ -30,8 +30,8 @@
             </Label>
          </children>
       </VBox>
-      <Label fx:id="status" alignment="CENTER" prefHeight="60.0" prefWidth="71.0" />
-      <HBox alignment="CENTER" prefHeight="59.0" prefWidth="158.0" spacing="20.0">
+      <ImageView fx:id="logo" fitHeight="44.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true" />
+      <HBox alignment="CENTER" prefHeight="59.0" prefWidth="171.0" spacing="20.0">
          <children>
             <ImageView fx:id="download" fitHeight="30.0" fitWidth="33.0" pickOnBounds="true" preserveRatio="true">
                <image>

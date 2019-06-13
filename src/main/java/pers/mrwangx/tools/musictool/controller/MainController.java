@@ -20,6 +20,7 @@ import javafx.stage.DirectoryChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import pers.mrwangx.tool.musictool.config.MusicAPIConfig;
 import pers.mrwangx.tool.musictool.entity.Song;
 import pers.mrwangx.tools.musictool.App;
 import pers.mrwangx.tools.musictool.service.Data;
@@ -327,7 +328,7 @@ public class MainController implements Initializable {
                     Task<String> songPlayUrlTask = new Task<String>() {
                         @Override
                         protected String call() throws Exception {
-                            return QQMusicUtil.getSongPlayUrl(song.getSongid());
+                            return MusicAPIConfig.REAL_SONG_PLAY_URL(song.getMusicType(), song.getSongid());
                         }
                     };
                     songPlayUrlTask.setOnSucceeded(event -> {
@@ -346,9 +347,11 @@ public class MainController implements Initializable {
                             }
                         }
                         LOGGER.info(resource);
-                        media = new Media(resource);
 
+
+                        media = new Media(resource);
                         mediaPlayer = new MediaPlayer(media);
+
                         int time = song.getDuration();
                         mediaPlayer.setOnReady(() -> {
                             timeLabel.setText(String.format("%02d:%02d", time / 60, time % 60));
