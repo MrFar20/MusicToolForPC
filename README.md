@@ -1,6 +1,6 @@
-# QQMusicTool
+# MusicToolForPC
 
-用JavaFx写的QQ音乐工具,可在线听和缓存收藏歌曲,支持收藏歌曲到本地,支持linux
+用JavaFx写的音乐工具,可在线听和缓存收藏歌曲,支持五大音乐库的搜索和在线播放，支持收藏歌曲到本地,支持linux
 
 ## ver1.0
 
@@ -18,27 +18,29 @@
 
 ### 搜索
 
-![搜索](https://raw.githubusercontent.com/wanghaoxin20/QQMusicTool/master/img/searchResult.png)
+![搜索](https://raw.githubusercontent.com/wanghaoxin20/MusicToolForPC/master/img/searchResult.png)
 
 
 
 ### 我的收藏
 
-![我的收藏](https://raw.githubusercontent.com/wanghaoxin20/QQMusicTool/master/img/collect.png)
+![我的收藏](https://raw.githubusercontent.com/wanghaoxin20/MusicToolForPC/master/img/collect.png)
 
 
 
 ### 设置
 
-![设置](https://raw.githubusercontent.com/wanghaoxin20/QQMusicTool/master/img/settings.png)
+![设置](https://raw.githubusercontent.com/wanghaoxin20/MusicToolForPC/master/img/settings.png)
 
 
 
 ## 使用
 
->1.鼠标左键双击播放音，右键单击添加/删除收藏，右键双击下载歌曲
+>1.鼠标左键双击播放音乐
 >
 >2.暂时只支持顺序播放
+>
+>3.下载进度暂无显示
 
 
 
@@ -52,4 +54,4 @@
 
 ## 声明
 
-此软件供学习和交流用，请支持正版QQ音乐！！！！
+此软件供学习和交流用，请支持正版音乐！！！！
